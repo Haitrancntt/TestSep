@@ -59,5 +59,20 @@ public class Account_Control {
         java.util.regex.Matcher m = p.matcher(email);
         return m.matches();
     }
+
+    public int GetAccountID(String username) throws Exception {
+        try {
+            PreparedStatement query = connect.prepareStatement("select Id from Account where Username = '" + username + "'");
+            ResultSet rs = query.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                i = rs.getInt("Id");
+            }
+            return i;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("query sai ");
+        }
+    }
 }
 

@@ -19,6 +19,7 @@ import Database.DatabaseConnection;
  */
 public class LoginActivity extends AppCompatActivity {
     public static DatabaseConnection db = new DatabaseConnection();
+    public static int Account_Id;
     EditText txtUS, txtPass;
     Account_Control account_control;
     TextView lblus, lblpass;
@@ -57,6 +58,8 @@ public class LoginActivity extends AppCompatActivity {
                         if (b1) {
                             boolean b = account_control.CheckLogin(username, password);
                             if (b) {
+                                Account_Id = account_control.GetAccountID(username);
+                                //   Toast.makeText(LoginActivity.this, Account_Id+"", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                             } else {

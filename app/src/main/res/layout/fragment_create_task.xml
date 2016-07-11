@@ -12,14 +12,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="NEW TASK"
+        android:text="New Task"
         android:textColor="@color/colorText"
         android:textSize="30dp"
         android:textStyle="bold"
         android:theme="@style/AlertDialog.AppCompat" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/txtCreateTag"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView2"
@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/editText3"
+        android:layout_below="@+id/txtCreateTag"
         android:layout_marginTop="26dp"
         android:text="Tag:"
         android:textColor="@color/colorText"
@@ -56,8 +56,8 @@
         android:layout_height="65dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/ic_save"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="83dp"
+        android:background="@drawable/ic_save" />
 
 
 </RelativeLayout>

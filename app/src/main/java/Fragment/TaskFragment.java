@@ -24,7 +24,7 @@ import java.util.Arrays;
 public class TaskFragment extends Fragment {
     private ImageButton btnadd;
     private ArrayList<String> arrayList;
-    private String[] myList = new String[]{"Task 1", "Task 2", "Task 3"};
+    private String[] myList;
     private ListView listView;
     private ArrayAdapter<String> arrayAdapter;
 
@@ -37,7 +37,8 @@ public class TaskFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_task, container, false);
-        listView = (ListView) view.findViewById(R.id.listView);
+        listView = (ListView) view.findViewById(R.id.listview_Task);
+        myList = getResources().getStringArray(R.array.item_task);
         arrayList = new ArrayList<>(Arrays.asList(myList));
         arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item, myList);
         listView.setAdapter(arrayAdapter);
@@ -48,7 +49,7 @@ public class TaskFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        btnadd = (ImageButton) getActivity().findViewById(R.id.imageButtonTag);
+        btnadd = (ImageButton) getActivity().findViewById(R.id.imageButtonTask);
         btnadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

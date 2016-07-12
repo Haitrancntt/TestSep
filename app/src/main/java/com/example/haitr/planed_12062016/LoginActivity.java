@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         lblpass = (TextView) findViewById(R.id.lblErrorPass);
         btnlogin = (Button) findViewById(R.id.buttonlogin);
         txtPass = (EditText) findViewById(R.id.txtPass);
-        txtUS = (EditText) findViewById(R.id.txtUS);
+        txtUS = (EditText) findViewById(R.id.txtUsername);
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

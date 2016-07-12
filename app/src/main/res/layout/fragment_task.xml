@@ -7,34 +7,46 @@
     <!-- TODO: Update blank fragment layout -->
 
     <ImageButton
-        android:id="@+id/imageButtonTag"
+        android:id="@+id/imageButtonTask"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/ic_addtask"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="40dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/ic_addtask" />
+
+    <TextView
+        android:id="@+id/txtNewTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Task"
+        android:textColor="@color/colorText"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:theme="@style/AlertDialog.AppCompat" />
+
+
+    <ListView
+        android:id="@+id/listview_Task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/imageButtonTask"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/txtNewTask"
+        android:scrollbarAlwaysDrawVerticalTrack="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Task"
-        android:id="@+id/textView2"
-        android:textSize="30dp"
-        android:theme="@style/AlertDialog.AppCompat"
-        android:textColor="@color/colorText"
+        android:text="New Task"
+        android:textSize="20dp"
         android:textStyle="bold"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView2"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
-        android:layout_above="@+id/imageButtonTag" />
-
+        android:textColor="@color/colorText"
+        android:layout_marginLeft="150dp"
+        android:layout_alignBottom="@+id/imageButtonTask"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-20dp" />
 </RelativeLayout>

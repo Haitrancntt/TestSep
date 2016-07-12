@@ -1,8 +1,14 @@
 package Controller;
 
+import android.util.Log;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Thanh Huy on 7/9/2016.
@@ -10,10 +16,12 @@ import java.sql.ResultSet;
 public class Account_Control {
     Connection connect;
 
+    // connect database
     public Account_Control(Connection connection) {
         this.connect = connection;
     }
 
+    // check username
     public boolean CheckUsername(String username) throws Exception {
         try {
             PreparedStatement query = connect.prepareStatement("select Username from Account where Username = '" + username + "'");
@@ -33,6 +41,7 @@ public class Account_Control {
         }
     }
 
+    // Check user login
     public boolean CheckLogin(String username, String password) throws Exception {
 
         try {
@@ -53,6 +62,7 @@ public class Account_Control {
         }
     }
 
+    // check email input valid or not
     public boolean CheckEmail(String email) {
         String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);

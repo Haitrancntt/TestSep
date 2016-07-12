@@ -5,33 +5,53 @@
     tools:context="Fragment.TagFragment">
 
     <ImageButton
-        android:id="@+id/imageButtonTag"
+        android:id="@+id/imageButtonTask"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/ic_addtag"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/ic_addtag" />
 
     <ListView
-        android:id="@+id/listItem"
+        android:id="@+id/listview_Tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/imageButtonTask"
         android:layout_alignParentEnd="true"
-        android:layout_above="@+id/imageButtonTag"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="80dp"
         android:layout_marginTop="60dp" />
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tag"
-        android:id="@+id/textView"
-        android:textSize="30dp"
-        android:theme="@style/AlertDialog.AppCompat"
-        android:textColor="@color/colorText"
-        android:textStyle="bold"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:text="Tag"
+        android:textColor="@color/colorText"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:theme="@style/AlertDialog.AppCompat" />
+
+    <EditText
+        android:id="@+id/edit_newtag"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/listview_Tag"
+        android:layout_marginTop="-60dp"
+        android:hint="New tag..." />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:textColor="@color/colorText"
+        android:layout_marginLeft="170dp"
+        android:layout_alignBottom="@+id/imageButtonTask"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-20dp" />
 
 </RelativeLayout>

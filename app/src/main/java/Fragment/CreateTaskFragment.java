@@ -32,7 +32,7 @@ public class CreateTaskFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        btnExit = (ImageButton) getActivity().findViewById(R.id.imageButton3);
+        btnExit = (ImageButton) getActivity().findViewById(R.id.imageButton_CreateNewTask);
         btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

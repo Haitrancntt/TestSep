@@ -32,7 +32,7 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-        listView = (ListView) view.findViewById(R.id.listView2);
+        listView = (ListView) view.findViewById(R.id.listview_Main);
         arrayList = new ArrayList<>(Arrays.asList(strings));
         arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item,strings);
         listView.setAdapter(arrayAdapter);

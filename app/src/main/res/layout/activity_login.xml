@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/txtUS"
+        android:id="@+id/txtUsername"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"
@@ -23,7 +23,7 @@
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/txtUS"
+        android:layout_below="@+id/txtUsername"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="42dp"
@@ -43,7 +43,7 @@
         android:layout_marginTop="42dp"
         android:background="@drawable/rounded_button"
         android:text="Log In"
-        android:textColor="@color/abc_primary_text_material_dark"
+        android:textColor="@color/colorTextLogin"
         android:textSize="20dp" />
 
     <TextView
@@ -51,9 +51,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/txtPass"
-        android:layout_below="@+id/txtUS"
+        android:layout_below="@+id/txtUsername"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#ff0000" />
+        android:textColor="@color/colorAccent" />
 
     <TextView
         android:id="@+id/lblErrorPass"
@@ -62,5 +62,5 @@
         android:layout_alignStart="@+id/txtPass"
         android:layout_below="@+id/txtPass"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#ff0000" />
+        android:textColor="@color/colorAccent" />
 </RelativeLayout>

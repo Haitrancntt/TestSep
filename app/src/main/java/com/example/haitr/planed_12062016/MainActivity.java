@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import Fragment.AccountFragment;
 import Fragment.MainFragment;
 import Fragment.TagFragment;
 import Fragment.TaskFragment;
@@ -84,6 +85,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_time) {
             fm.beginTransaction().replace(R.id.content_frame, new TimeFragment()).commit();
 
+        } else if (id == R.id.nav_account) {
+            fm.beginTransaction().replace(R.id.content_frame, new AccountFragment()).commit();
         } else if (id == R.id.nav_tag) {
             fm.beginTransaction().replace(R.id.content_frame, new TagFragment()).commit();
 
@@ -100,5 +103,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
 }

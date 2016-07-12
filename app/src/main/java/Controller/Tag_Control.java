@@ -18,7 +18,7 @@ public class Tag_Control {
 
     public boolean AddTag(String name, int Acc_Id) {
         try {
-            PreparedStatement query = connect.prepareStatement("exec SP_TAG_INSERT " + "?, ?");
+            PreparedStatement query = connect.prepareStatement("exec SP_TAG_INSERT ?, ?");
             query.setString(1, name);
             query.setInt(2, Acc_Id);
             int i = query.executeUpdate();

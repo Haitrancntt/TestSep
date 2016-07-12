@@ -31,7 +31,6 @@
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/editText_Password"
         android:layout_marginTop="60dp"
@@ -71,5 +70,29 @@
         android:layout_centerHorizontal="true"
         android:textColor="@color/colorText"
         android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/textview_errorname"
+        android:layout_below="@+id/editText_Name"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/textview_erroremail"
+        android:layout_below="@+id/editText_Email"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/textview_errorpass"
+        android:layout_below="@+id/editText_Password"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

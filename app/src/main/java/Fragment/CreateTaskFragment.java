@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.haitr.planed_12062016.R;
@@ -17,6 +18,7 @@ import com.example.haitr.planed_12062016.R;
  */
 public class CreateTaskFragment extends Fragment {
     private ImageButton btnExit;
+
     public CreateTaskFragment() {
         // Required empty public constructor
     }

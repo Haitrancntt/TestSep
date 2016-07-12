@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.haitr.planed_12062016.LoginActivity;
@@ -31,10 +32,7 @@ public class TagFragment extends Fragment {
     private ArrayAdapter arrayAdapter;
     private ImageButton btnAdd;
     private EditText txtName;
-    public TagFragment() {
-        // Required empty public constructor
-    }
-
+    private TextView txtError;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,7 +60,7 @@ public class TagFragment extends Fragment {
                     txtName.setText("");
                     LoadList();
                 } else {
-
+                    txtError.setText(R.string.error_tag);
                 }
             }
         });

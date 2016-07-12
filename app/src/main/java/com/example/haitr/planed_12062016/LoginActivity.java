@@ -50,7 +50,8 @@ public class LoginActivity extends AppCompatActivity {
                 lblus.setText("");
                 String username = txtUS.getText().toString();
                 String password = txtPass.getText().toString();
-
+                username = "huyle32@vanlanguni.vn";
+                password = "8320748";
                 try {
                     boolean b2 = account_control.CheckEmail(username);
                     if (b2) {
@@ -63,20 +64,20 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                             } else {
-                                lblpass.setText("Wrong password");
+                                lblpass.setText(R.string.error_pass_login);
                                 txtPass.setText("");
                                 txtPass.requestFocus();
                                 InputMethodManager imm = (InputMethodManager) getSystemService(LoginActivity.this.INPUT_METHOD_SERVICE);
                                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
                             }
                         } else {
-                            lblus.setText("Cannot find Username");
+                            lblus.setText(R.string.error_username_login);
                             txtUS.requestFocus();
                             InputMethodManager imm = (InputMethodManager) getSystemService(LoginActivity.this.INPUT_METHOD_SERVICE);
                             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
                         }
                     } else {
-                        lblus.setText("Username must be email address");
+                        lblus.setText(R.string.error_email_login);
                         txtUS.requestFocus();
                         InputMethodManager imm = (InputMethodManager) getSystemService(LoginActivity.this.INPUT_METHOD_SERVICE);
                         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);

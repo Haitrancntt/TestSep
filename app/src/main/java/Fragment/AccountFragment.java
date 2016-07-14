@@ -45,6 +45,8 @@ public class AccountFragment extends Fragment {
         iAccountId = LoginActivity.Account_Id;
         iPermission = account_control.GetPermission(iAccountId);
         imgbutton_CreateAccount = (ImageButton) getActivity().findViewById(R.id.imagebutton_createaccount);
+        imgbutton_ResetPass = (ImageButton) getActivity().findViewById(R.id.imagebutton_resetpass);
+        imgbutton_ChangePass = (ImageButton) getActivity().findViewById(R.id.imagebutton_changepass);
         imgbutton_CreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,10 +58,18 @@ public class AccountFragment extends Fragment {
                 }
             }
         });
+        imgbutton_ResetPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (iPermission == 1) {
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.content_frame, new ResetPassFragment()).commit();
+                } else {
+                    Toast.makeText(getContext(), "You can not allow for permission", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
-
-        imgbutton_ResetPass = (ImageButton) getActivity().findViewById(R.id.imagebutton_resetpass);
-        imgbutton_ChangePass = (ImageButton) getActivity().findViewById(R.id.imagebutton_changepass);
 
     }
 }

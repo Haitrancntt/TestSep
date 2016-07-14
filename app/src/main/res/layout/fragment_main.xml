@@ -7,34 +7,42 @@
     <!-- TODO: Update blank fragment layout -->
 
     <ImageButton
+        android:id="@+id/imageButtonMain"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:id="@+id/imageButtonMain"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/ic_addtask"
-        android:layout_marginBottom="40dp" />
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/ic_addtask" />
 
     <ListView
+        android:id="@+id/listview_Main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listview_Main"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
         android:layout_above="@+id/imageButtonMain"
-        android:choiceMode="singleChoice"
-        android:layout_marginBottom="20dp" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="40dp"
+        android:choiceMode="singleChoice" />
 
     <TextView
+        android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Create Task"
-        android:id="@+id/textView6"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:text="Create Task"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/colorText"
         android:textSize="20dp"
-        android:textStyle="bold"
-        android:layout_marginBottom="20dp" />
+        android:textStyle="bold" />
+
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

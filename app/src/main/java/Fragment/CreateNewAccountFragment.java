@@ -1,19 +1,10 @@
 package Fragment;
 
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +16,6 @@ import android.widget.Toast;
 import com.example.haitr.planed_12062016.Encryption;
 import com.example.haitr.planed_12062016.LoginActivity;
 import com.example.haitr.planed_12062016.R;
-
-import org.w3c.dom.Text;
 
 import Controller.Account_Control;
 
@@ -89,7 +78,7 @@ public class CreateNewAccountFragment extends Fragment {
                     }
                 } else {
                     try {
-                        if (account_control.CheckEmail(sEmail) == true) {
+                        if (account_control.CheckEmail(sEmail)) {
                             if (account_control.CheckExisted(sEmail) == true) {
                                 txtErrorEmail.setText(R.string.existed_email);
                             } else {

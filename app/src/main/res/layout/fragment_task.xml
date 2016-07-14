@@ -13,7 +13,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/ic_addtask" />
 
     <TextView
@@ -36,17 +36,18 @@
         android:layout_above="@+id/imageButtonTask"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/txtNewTask"
+        android:layout_marginTop="30dp"
         android:scrollbarAlwaysDrawVerticalTrack="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Task"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:textColor="@color/colorText"
-        android:layout_marginLeft="150dp"
         android:layout_alignBottom="@+id/imageButtonTask"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="-20dp" />
+        android:layout_marginBottom="-20dp"
+        android:layout_marginLeft="150dp"
+        android:text="New Task"
+        android:textColor="@color/colorText"
+        android:textSize="20dp"
+        android:textStyle="bold" />
 </RelativeLayout>

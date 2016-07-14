@@ -12,7 +12,6 @@ import com.example.haitr.planed_12062016.R;
 import java.util.ArrayList;
 
 import Class.Task;
-
 /**
  * Created by Thanh Huy on 7/14/2016.
  */

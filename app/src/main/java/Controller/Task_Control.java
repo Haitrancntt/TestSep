@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Class.Task;
-
 /**
  * Created by Thanh Huy on 7/14/2016.
  */

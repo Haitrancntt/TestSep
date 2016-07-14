@@ -34,7 +34,7 @@ public class MainFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         listView = (ListView) view.findViewById(R.id.listview_Main);
         arrayList = new ArrayList<>(Arrays.asList(strings));
-        arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,strings);
+        arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, strings);
         listView.setAdapter(arrayAdapter);
         return view;
     }

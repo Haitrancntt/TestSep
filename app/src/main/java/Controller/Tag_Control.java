@@ -67,7 +67,7 @@ public class Tag_Control {
         }
     }
 
-    // Delete tag
+    // DELETE TAG
     public boolean DeleteTag(int SID) {
         try {
             PreparedStatement delete = connect.prepareStatement("exec SP_TAG_DELETE ?");

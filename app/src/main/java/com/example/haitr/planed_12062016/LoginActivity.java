@@ -25,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView lblus, lblpass;
     private Button btnlogin;
     private RelativeLayout relativeLayout;
+    private int iPermission;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
                             boolean b = account_control.CheckLogin(username, password);
                             if (b) {
                                 Account_Id = account_control.GetAccountID(username);
+
                                 //   Toast.makeText(LoginActivity.this, Account_Id+"", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);

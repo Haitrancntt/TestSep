@@ -9,8 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.example.haitr.planed_12062016.LoginActivity;
 import com.example.haitr.planed_12062016.R;
+
+import Controller.Account_Control;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,6 +22,8 @@ import com.example.haitr.planed_12062016.R;
 public class AccountFragment extends Fragment {
     private ImageButton imgbutton_CreateAccount, imgbutton_ChangePass, imgbutton_ResetPass;
     private FragmentManager fragmentManager;
+    private Account_Control account_control;
+    private int iPermission, iAccountId;
 
     public AccountFragment() {
         // Required empty public constructor
@@ -35,12 +41,19 @@ public class AccountFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        account_control = new Account_Control(LoginActivity.db.getConnection());
+        iAccountId = LoginActivity.Account_Id;
+        iPermission = account_control.GetPermission(iAccountId);
         imgbutton_CreateAccount = (ImageButton) getActivity().findViewById(R.id.imagebutton_createaccount);
         imgbutton_CreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentManager=getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.content_frame, new CreateNewAccountFragment()).commit();
+                if (iPermission == 1) {
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.content_frame, new CreateNewAccountFragment()).commit();
+                } else {
+                    Toast.makeText(getContext(), "You can not allow for permission", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

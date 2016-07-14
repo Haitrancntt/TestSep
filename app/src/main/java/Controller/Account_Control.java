@@ -1,15 +1,10 @@
 package Controller;
 
-import android.util.Log;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by Thanh Huy on 7/9/2016.
@@ -17,12 +12,12 @@ import java.util.logging.Logger;
 public class Account_Control {
     Connection connect;
 
-    // connect database
+    // CONNeCT DATABASE
     public Account_Control(Connection connection) {
         this.connect = connection;
     }
 
-    // check username
+    // CHECK USERNAME
     public boolean CheckUsername(String username) throws Exception {
         try {
             PreparedStatement query = connect.prepareStatement("select Username from Account where Username = '" + username + "'");
@@ -42,7 +37,7 @@ public class Account_Control {
         }
     }
 
-    // Check user login
+    // CHECK USER LOGIN
     public boolean CheckLogin(String username, String password) throws Exception {
 
         try {
@@ -63,7 +58,7 @@ public class Account_Control {
         }
     }
 
-    // check email existed or not
+    // CHECK EMAIL EXIST OR NOT BY EMAIL
     public boolean CheckExisted(String email) throws Exception {
         boolean bCheck = false;
         try {
@@ -83,7 +78,7 @@ public class Account_Control {
         }
     }
 
-    // check email input valid or not
+    // CHECK EMAIL INPUT VALID
     public boolean CheckEmail(String email) {
         String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
@@ -91,7 +86,7 @@ public class Account_Control {
         return m.matches();
     }
 
-    // get account id
+    // GET ACCOUNT ID
     public int GetAccountID(String username) throws Exception {
         try {
             PreparedStatement query = connect.prepareStatement("select Id from Account where Username = '" + username + "'");
@@ -107,7 +102,7 @@ public class Account_Control {
         }
     }
 
-    // create new account
+    // CREATE NEW ACCOUNT
     public boolean AddNewAccount(String sEmail, String sName, String sPassword) {
         try {
             PreparedStatement account = connect.prepareStatement("exec SP_ACCOUNT_INSERT ?, ?,?");
@@ -124,6 +119,22 @@ public class Account_Control {
             e.printStackTrace();
             return false;
         }
+    }
+    // GET PERMISSION
+    public int GetPermission(int iAccountId) {
+        int output = 0;
+        try {
+            PreparedStatement get = connect.prepareStatement("exec SP_GetPermission ?");
+            get.setInt(1, iAccountId);
+            // int i = get.executeUpdate();
+            ResultSet rs = get.executeQuery();
+            while (rs.next()) {
+                output = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return output;
     }
 
 }

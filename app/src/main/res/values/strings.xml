@@ -3,11 +3,10 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="action_settings">Settings</string>
 
-    <string name="error_tag">Add Failed</string>
 
+    //login
     <string name="error_pass_login">Wrong password</string>
 
     <string name="error_username_login">Cannot find Username</string>
@@ -15,9 +14,16 @@
     <string name="error_email_login">Username must be email address</string>
 
     <string name="existed_email">Username has existed</string>
-
+    //null space
     <string name="null_space">This field do not allow empty</string>
+    // tag
+    <string name="edit_tag_success">Edit success</string>
 
+    <string name="error_tag">Add Failed</string>
+
+    <string name="edit_tag_failed">Edit failed</string>
+
+    <string name="delete_tag_success">Delete success</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="prompt">Choose one Type</string>
     <string-array name="item_spinner">
@@ -27,6 +33,7 @@
         <item>Trip</item>
         <item>Exercise</item>
     </string-array>
+
     <string-array name="item_task">
         <item>Task 1</item>
         <item>Task 2</item>
@@ -34,6 +41,10 @@
         <item>Task 4</item>
     </string-array>
 
+    <string-array name="menu">
+        <item>Edit</item>
+        <item>Delete</item>
+    </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

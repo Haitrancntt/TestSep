@@ -11,6 +11,7 @@ import java.util.ArrayList;
  */
 public class Tag_Control {
     Connection connect;
+    private int output;
 
     public Tag_Control(Connection connection) {
         connect = connection;
@@ -45,5 +46,57 @@ public class Tag_Control {
             e.printStackTrace();
         }
         return list;
+    }
+
+    // edit tag
+    public boolean EditTag(String Name, int SID) {
+        try {
+            //  PreparedStatement Pedit = connect.prepareStatement("exec SP_TAG_UPDATE "+SID+",'"+Name+"'");
+            PreparedStatement Pedit = connect.prepareStatement("exec SP_TAG_UPDATE ?,?");
+            Pedit.setInt(1, SID);
+            Pedit.setString(2, Name);
+            int i = Pedit.executeUpdate();
+            if (i == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Delete tag
+    public boolean DeleteTag(int SID) {
+        try {
+            PreparedStatement delete = connect.prepareStatement("exec SP_TAG_DELETE ?");
+            delete.setInt(1, SID);
+            int i = delete.executeUpdate();
+            if (i == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public int GetTagId(String name) {
+        int output = 0;
+        try {
+            PreparedStatement get = connect.prepareStatement("exec SP_GetTagId ?");
+            get.setString(1, name);
+            // int i = get.executeUpdate();
+            ResultSet rs = get.executeQuery();
+            while (rs.next()) {
+                output = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return output;
     }
 }

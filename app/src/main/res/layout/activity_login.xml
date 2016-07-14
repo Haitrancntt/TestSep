@@ -49,7 +49,8 @@
         android:layout_alignStart="@+id/txtPass"
         android:layout_below="@+id/txtUsername"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/colorAlert" />
+        android:textColor="@color/colorAlert"
+        android:layout_marginTop="-10dp" />
 
     <TextView
         android:id="@+id/lblErrorPass"
@@ -58,7 +59,8 @@
         android:layout_alignStart="@+id/txtPass"
         android:layout_below="@+id/txtPass"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/colorAlert" />
+        android:textColor="@color/colorAlert"
+        android:layout_marginTop="10dp" />
 
     <CheckBox
         android:id="@+id/checkBox"

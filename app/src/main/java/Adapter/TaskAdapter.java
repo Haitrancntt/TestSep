@@ -10,12 +10,13 @@ import android.widget.TextView;
 import com.example.haitr.planed_12062016.R;
 
 import java.util.ArrayList;
+
 import Class.Task;
+
 /**
  * Created by Thanh Huy on 7/14/2016.
  */
-public class TaskAdapter extends BaseAdapter
-{
+public class TaskAdapter extends BaseAdapter {
     Context context;
     int layout;
     ArrayList<Task> arrayList;
@@ -44,10 +45,10 @@ public class TaskAdapter extends BaseAdapter
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = inflater.inflate(R.layout.layout_task,null);
-        TextView txtName = (TextView)convertView.findViewById(R.id.textView9);
+        convertView = inflater.inflate(R.layout.layout_task, null);
+        TextView txtName = (TextView) convertView.findViewById(R.id.textView9);
         txtName.setText(arrayList.get(position).getName());
-        TextView txtTagName = (TextView)convertView.findViewById(R.id.textView10);
+        TextView txtTagName = (TextView) convertView.findViewById(R.id.textView10);
         txtTagName.setText(arrayList.get(position).getTag_name());
         return convertView;
     }

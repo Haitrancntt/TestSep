@@ -1,11 +1,11 @@
 package com.example.haitr.planed_12062016;
 
+import java.security.NoSuchAlgorithmException;
+
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-
-import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by haitr on 7/11/2016.
@@ -14,9 +14,9 @@ public class Encryption {
     static char[] HEX_CHARS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
     private String iv = "fedcba9876543210";//Dummy iv (CHANGE IT!)
-    private IvParameterSpec ivspec;
-    private SecretKeySpec keyspec;
-    private Cipher cipher;
+    private static IvParameterSpec ivspec;
+    private static SecretKeySpec keyspec;
+    private static Cipher cipher;
 
     private String SecretKey = "0123456789abcdef";//Dummy secretKey (CHANGE IT!)
 
@@ -36,7 +36,7 @@ public class Encryption {
         }
     }
 
-    public byte[] encrypt(String text) throws Exception {
+    public static byte[] encrypt(String text) throws Exception {
         if (text == null || text.length() == 0)
             throw new Exception("Empty string");
 
@@ -53,7 +53,7 @@ public class Encryption {
         return encrypted;
     }
 
-    public byte[] decrypt(String code) throws Exception {
+    public static byte[] decrypt(String code) throws Exception {
         if (code == null || code.length() == 0)
             throw new Exception("Empty string");
 

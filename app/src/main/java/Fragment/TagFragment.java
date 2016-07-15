@@ -59,23 +59,37 @@ public class TagFragment extends Fragment {
         registerForContextMenu(listView);
         LoadList();
         btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = txtName.getText().toString();
-                if (txtName.getText().toString().equals("")) {
-                    Toast.makeText(getContext(), R.string.null_space, Toast.LENGTH_LONG).show();
-                } else {
-                    boolean b = tag_control.AddTag(name, accountID);
-                    if (b) {
-                        Toast.makeText(getContext(), "Added new Tag successfully", Toast.LENGTH_SHORT).show();
-                        txtName.setText("");
-                        LoadList();
-                    } else {
-                        txtError.setText(R.string.error_tag);
-                    }
-                }
-            }
-        });
+                                      @Override
+                                      public void onClick(View v) {
+                                          String name = txtName.getText().toString();
+
+                                          // VALIDATE NULL
+                                          if (txtName.getText().toString().equals("")) {
+                                              Toast.makeText(getContext(), R.string.null_space, Toast.LENGTH_LONG).show();
+                                          } else {
+                                              //VALIDATE NOT NULL
+                                              boolean bCheck = tag_control.CheckTagExisted(name);
+                                              if (bCheck) {
+                                                  //CHECK EXISTED
+                                                  Toast.makeText(getContext(), R.string.existed_tag, Toast.LENGTH_LONG).show();
+                                              } else {
+                                                  //ADD TAG
+                                                  boolean b = tag_control.AddTag(name, accountID);
+                                                  if (b) {
+                                                      Toast.makeText(getContext(), R.string.add_tag_success, Toast.LENGTH_SHORT).show();
+                                                      txtName.setText("");
+                                                      LoadList();
+                                                  } else {
+                                                      Toast.makeText(getContext(), R.string.add_tag_failed, Toast.LENGTH_SHORT).show();
+
+                                                  }
+                                              }
+                                          }
+                                      }
+
+                                  }
+
+        );
     }
 
     // CREATE CONTEXT MENU FOR DELETE / EDIT

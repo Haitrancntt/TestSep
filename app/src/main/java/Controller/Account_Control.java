@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class Account_Control {
     Connection connect;
 
-    // CONNeCT DATABASE
+    // CONNECT DATABASE
     public Account_Control(Connection connection) {
         this.connect = connection;
     }

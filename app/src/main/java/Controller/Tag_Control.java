@@ -17,6 +17,7 @@ public class Tag_Control {
         connect = connection;
     }
 
+    // ADD TAG
     public boolean AddTag(String name, int Acc_Id) {
         try {
             PreparedStatement query = connect.prepareStatement("exec SP_TAG_INSERT ?, ?");
@@ -34,6 +35,7 @@ public class Tag_Control {
         }
     }
 
+    //LOAD ALL LIST TAG
     public ArrayList<String> LoadList(int Acc_Id) {
         ArrayList<String> list = new ArrayList<String>();
         try {
@@ -48,7 +50,7 @@ public class Tag_Control {
         return list;
     }
 
-    // edit tag
+    // EDIT TAG
     public boolean EditTag(String Name, int SID) {
         try {
             //  PreparedStatement Pedit = connect.prepareStatement("exec SP_TAG_UPDATE "+SID+",'"+Name+"'");
@@ -84,6 +86,7 @@ public class Tag_Control {
         }
     }
 
+    //GET TAG ID
     public int GetTagId(String name) {
         int output = 0;
         try {
@@ -98,5 +101,26 @@ public class Tag_Control {
             e.printStackTrace();
         }
         return output;
+    }
+
+    //CHECK EXISTED NAME
+    public boolean CheckTagExisted(String NameTag) {
+        try {
+            PreparedStatement check = connect.prepareStatement("exec SP_CheckExistedTag ?");
+            int iCount = 0;
+            check.setString(1, NameTag);
+            ResultSet resultSet = check.executeQuery();
+            while (resultSet.next()) {
+                iCount++;
+            }
+            if (iCount > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

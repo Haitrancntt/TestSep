@@ -14,6 +14,8 @@
     <string name="error_email_login">Username must be email address</string>
 
     <string name="existed_email">Username has existed</string>
+
+    <string name="permission">You can not allow for permission</string>
     //null space
     <string name="null_space">This field do not allow empty</string>
     // tag
@@ -24,6 +26,12 @@
     <string name="edit_tag_failed">Edit failed</string>
 
     <string name="delete_tag_success">Delete success</string>
+
+    <string name="existed_tag">That name have already existed, please choose another name.</string>
+
+    <string name="add_tag_success">Tag has been added successfully.</string>
+
+    <string name="add_tag_failed">Tag has been not added</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="prompt">Choose one Type</string>
     <string-array name="item_spinner">

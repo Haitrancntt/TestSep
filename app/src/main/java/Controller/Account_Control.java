@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by Thanh Huy on 7/9/2016.
@@ -137,5 +138,18 @@ public class Account_Control {
         return output;
     }
 
+    public ArrayList<String> LoadList() {
+        ArrayList<String> arrayList = new ArrayList<String>();
+        try {
+            PreparedStatement query = connect.prepareStatement("select Username from Account");
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                arrayList.add(resultSet.getString("Username"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return arrayList;
+    }
 }
 

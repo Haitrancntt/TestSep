@@ -52,11 +52,14 @@ public class AccountFragment extends Fragment {
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.content_frame, new CreateNewAccountFragment()).commit();
                 } else {
-                    Toast.makeText(getContext(), R.string.permission, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "You can not allow for permission", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+
         imgbutton_ResetPass = (ImageButton) getActivity().findViewById(R.id.imagebutton_resetpass);
         imgbutton_ChangePass = (ImageButton) getActivity().findViewById(R.id.imagebutton_changepass);
+
     }
 }

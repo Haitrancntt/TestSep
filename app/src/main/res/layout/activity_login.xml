@@ -31,11 +31,12 @@
 
     <Button
         android:id="@+id/buttonlogin"
-        android:layout_width="200dp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/checkBox"
         android:layout_centerHorizontal="true"
-
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/rounded_button"
         android:text="Log In"
@@ -48,9 +49,9 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/txtPass"
         android:layout_below="@+id/txtUsername"
+        android:layout_marginTop="-10dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/colorAlert"
-        android:layout_marginTop="-10dp" />
+        android:textColor="@color/colorAlert" />
 
     <TextView
         android:id="@+id/lblErrorPass"
@@ -58,9 +59,9 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/txtPass"
         android:layout_below="@+id/txtPass"
+        android:layout_marginTop="10dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/colorAlert"
-        android:layout_marginTop="10dp" />
+        android:textColor="@color/colorAlert" />
 
     <CheckBox
         android:id="@+id/checkBox"

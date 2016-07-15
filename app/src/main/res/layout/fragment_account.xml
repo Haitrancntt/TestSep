@@ -35,8 +35,9 @@
         android:layout_height="65dp"
         android:layout_alignStart="@+id/imagebutton_createaccount"
         android:layout_below="@+id/textView5"
+        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="80dp"
         android:background="@drawable/ic_resetpass"
         android:text="Reset Password" />
 
@@ -59,22 +60,22 @@
         android:id="@+id/imagebutton_changepass"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:background="@drawable/ic_changepass"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/imagebutton_resetpass"
-        android:layout_marginBottom="83dp" />
+        android:layout_marginBottom="83dp"
+        android:background="@drawable/ic_changepass" />
 
     <TextView
+        android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Change Password"
-        android:id="@+id/textView9"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/textview"
         android:layout_marginBottom="60dp"
+        android:text="Change Password"
         android:textColor="@color/colorText"
-        android:textStyle="bold"
-        android:textSize="20dp" />
+        android:textSize="20dp"
+        android:textStyle="bold" />
 
     <!--<ImageButton
         android:id="@+id/imagebutton_changepass"

@@ -11,8 +11,8 @@ import java.sql.SQLException;
  * Created by Thanh Huy on 7/1/2016.
  */
 public class DatabaseConnection {
+    public static Connection connection;
     private String ip, db, un, pass;
-    private Connection connection;
 
     public DatabaseConnection() {
         //ip = "135.234.238.136";
@@ -30,17 +30,17 @@ public class DatabaseConnection {
         String S_url = null;
         String driver = null;
         try {
+
             driver = "net.sourceforge.jtds.jdbc.Driver";
-            Class.forName(driver).newInstance();
+            Class.forName(driver);
             S_url = "jdbc:jtds:sqlserver://" + ip + ";"
                     + "databaseName=" + db + ";user=" + un + ";password="
                     + pass + ";";
-            connection = (Connection) DriverManager.getConnection(S_url);
+            connection = DriverManager.getConnection(S_url);
         } catch (ClassNotFoundException e) {
-            // e.printStackTrace();
-            throw new Exception("Khong tim thay Class");
+            e.printStackTrace();
         } catch (SQLException e) {
-            throw new Exception("Khong tim thay SQL");
+            e.printStackTrace();
         }
     }
 

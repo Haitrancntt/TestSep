@@ -34,7 +34,8 @@ public class Account_Control {
             return b;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new Exception("query sai ");
+            // throw new Exception("query sai ");
+            return false;
         }
     }
 

@@ -1,1 +1,1 @@
-include ':app', ':jtds-1.3.1', ':jtds-1.3.1a'
+include ':app', ':jtds-1.3.1'

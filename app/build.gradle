@@ -5,7 +5,7 @@ android {
         free {
             keyAlias 'IT'
             keyPassword '123456789'
-            storeFile file('D:/Learning/MyProject/TestSep/app/build/outputs/apk')
+            storeFile file('C:\\Users\\Thanh Huy\\AndroidStudioProjects\\TestSep\\app\\build\\outputs\\apk')
             storePassword '123456789'
         }
     }

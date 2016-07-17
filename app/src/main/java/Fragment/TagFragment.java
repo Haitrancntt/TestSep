@@ -106,7 +106,7 @@ public class TagFragment extends Fragment {
         }
     }
 
-    // SHOW POP UP FOR DELETE TAG
+    // SHOW POP UP FOR EDIT TAG
     public void AlertEdit(String item, final String sEdit) {
         final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
         alert.setTitle(item);

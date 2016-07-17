@@ -7,10 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import Class.Account;
 import Controller.Account_Control;
 import Database.DatabaseConnection;
 
@@ -26,7 +28,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnlogin;
     private RelativeLayout relativeLayout;
     private int iPermission;
-
+    private CheckBox checkBox;
+    private Account account;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,12 +40,20 @@ public class LoginActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        checkBox = (CheckBox) findViewById(R.id.checkBox);
         account_control = new Account_Control(db.getConnection());
         lblus = (TextView) findViewById(R.id.lblErrorUS);
         lblpass = (TextView) findViewById(R.id.lblErrorPass);
         btnlogin = (Button) findViewById(R.id.buttonlogin);
         txtPass = (EditText) findViewById(R.id.txtPass);
         txtUS = (EditText) findViewById(R.id.txtUsername);
+        //set remembered account
+        account = account_control.GetRememberedAccount();
+        txtUS.setText(account.getEmail());
+        txtPass.setText(account.getPassword());
+        if (txtUS.getText().length() != 0)
+            checkBox.setChecked(true);
+        //
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,8 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                 lblus.setText("");
                 String username = txtUS.getText().toString();
                 String password = txtPass.getText().toString();
-                username = "huyle32@vanlanguni.vn";
-                password = "8320748";
+
                 try {
                     boolean b2 = account_control.CheckEmail(username);
                     if (b2) {
@@ -62,7 +72,11 @@ public class LoginActivity extends AppCompatActivity {
                             boolean b = account_control.CheckLogin(username, password);
                             if (b) {
                                 Account_Id = account_control.GetAccountID(username);
-
+                                if (checkBox.isChecked()) {
+                                    account_control.SetRememberAccount(Account_Id);
+                                } else {
+                                    account_control.RemoveRemember(Account_Id);
+                                }
                                 //   Toast.makeText(LoginActivity.this, Account_Id+"", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);

@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import Class.Account;
+
 /**
  * Created by Thanh Huy on 7/9/2016.
  */
@@ -122,6 +124,7 @@ public class Account_Control {
             return false;
         }
     }
+
     // GET PERMISSION
     public int GetPermission(int iAccountId) {
         int output = 0;
@@ -151,6 +154,67 @@ public class Account_Control {
             e.printStackTrace();
         }
         return arrayList;
+    }
+
+    //Save account with remember checked
+    public void SetRememberAccount(int acc_id) {
+        try {
+            PreparedStatement query = connect.prepareStatement("exec sp_account_remember " + acc_id);
+            query.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Load account remembered
+    public Account GetRememberedAccount() {
+        Account account = new Account();
+        try {
+            PreparedStatement query = connect.prepareStatement("select * from account where status = 1");
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                account.setEmail(resultSet.getString("Username"));
+                account.setPassword(resultSet.getString("Password"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return account;
+    }
+
+    //remove remembered account
+    public void RemoveRemember(int acc_id) {
+        try {
+            PreparedStatement query = connect.prepareStatement("exec sp_account_disremember " + acc_id);
+            query.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //search account
+    public ArrayList<String> Search(String name) {
+        ArrayList<String> arrayList = new ArrayList<String>();
+        try {
+            PreparedStatement query = connect.prepareStatement("exec sp_account_search " + name);
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                arrayList.add(resultSet.getString("Username"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return arrayList;
+    }
+
+    //Reset password
+    public void ResetPassword(int acc_id) {
+        try {
+            PreparedStatement query = connect.prepareStatement("exec SP_ACCOUNT_RESET " + acc_id);
+            query.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
 

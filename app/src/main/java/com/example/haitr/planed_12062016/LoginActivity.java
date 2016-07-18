@@ -20,28 +20,30 @@ import Database.DatabaseConnection;
  * Created by haitr on 6/12/2016.
  */
 public class LoginActivity extends AppCompatActivity {
-    public static DatabaseConnection db = new DatabaseConnection();
+
     public static int Account_Id;
+    public static DatabaseConnection db;
     EditText txtUS, txtPass;
-    Account_Control account_control;
     TextView lblus, lblpass;
     private Button btnlogin;
     private RelativeLayout relativeLayout;
     private int iPermission;
     private CheckBox checkBox;
     private Account account;
+    private Account_Control account_control;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
+        db = new DatabaseConnection();
         try {
             db.Connect();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        checkBox = (CheckBox) findViewById(R.id.checkBox);
         account_control = new Account_Control(db.getConnection());
+        checkBox = (CheckBox) findViewById(R.id.checkBox);
         lblus = (TextView) findViewById(R.id.lblErrorUS);
         lblpass = (TextView) findViewById(R.id.lblErrorPass);
         btnlogin = (Button) findViewById(R.id.buttonlogin);

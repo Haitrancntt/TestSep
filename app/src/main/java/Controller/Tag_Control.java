@@ -39,7 +39,7 @@ public class Tag_Control {
     public ArrayList<String> LoadList(int Acc_Id) {
         ArrayList<String> list = new ArrayList<String>();
         try {
-            PreparedStatement query = connect.prepareStatement("Select * from Tag where Account_Id = " + Acc_Id);
+            PreparedStatement query = connect.prepareStatement("Select * from Tag where Account_Id = " + Acc_Id + " order by name");
             ResultSet rs = query.executeQuery();
             while (rs.next()) {
                 list.add(rs.getString("Name"));
@@ -87,6 +87,7 @@ public class Tag_Control {
     }
 
     //GET TAG ID
+    // SAI CMNR
     public int GetTagId(String name) {
         int output = 0;
         try {
@@ -121,6 +122,21 @@ public class Tag_Control {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public int GetTagIDByName(String name, int acc_id) throws Exception {
+        try {
+            PreparedStatement query = connect.prepareStatement("select id from tag where name = '" + name + "' and account_id = " + acc_id);
+            ResultSet resultSet = query.executeQuery();
+            int i = 0;
+            while (resultSet.next()) {
+                i = resultSet.getInt("id");
+            }
+            return i;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception("query sai");
         }
     }
 }

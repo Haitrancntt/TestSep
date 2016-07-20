@@ -3,6 +3,7 @@ package com.example.haitr.planed_12062016;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -31,6 +32,9 @@ public class LoginActivity extends AppCompatActivity {
     private CheckBox checkBox;
     private Account account;
     private Account_Control account_control;
+    private Encryption encryption;
+    private String sPassEncrypt, sPassDecrypt;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        encryption = new Encryption();
         account_control = new Account_Control(db.getConnection());
         checkBox = (CheckBox) findViewById(R.id.checkBox);
         lblus = (TextView) findViewById(R.id.lblErrorUS);
@@ -49,37 +54,44 @@ public class LoginActivity extends AppCompatActivity {
         btnlogin = (Button) findViewById(R.id.buttonlogin);
         txtPass = (EditText) findViewById(R.id.txtPass);
         txtUS = (EditText) findViewById(R.id.txtUsername);
-        //set remembered account
+
+        //SET REMEMBER ACCOUNT
         account = account_control.GetRememberedAccount();
-        txtUS.setText(account.getEmail());
-        txtPass.setText(account.getPassword());
-        if (txtUS.getText().length() != 0)
-            checkBox.setChecked(true);
-        //
+        try {
+            sPassDecrypt = new String(encryption.decrypt(account.getPassword()));
+            txtUS.setText(account.getEmail());
+            txtPass.setText(sPassDecrypt);
+            if (txtUS.getText().length() != 0)
+                checkBox.setChecked(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // BUTTON LISTENER
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(LoginActivity.this, db.getConnection().toString(), Toast.LENGTH_SHORT).show();
-
                 lblpass.setText("");
                 lblus.setText("");
                 String username = txtUS.getText().toString();
                 String password = txtPass.getText().toString();
-
                 try {
+
+                    sPassEncrypt = Encryption.bytesToHex(encryption.encrypt(password));
                     boolean b2 = account_control.CheckEmail(username);
                     if (b2) {
                         boolean b1 = account_control.CheckUsername(username);
                         if (b1) {
-                            boolean b = account_control.CheckLogin(username, password);
+                            boolean b = account_control.CheckLogin(username, sPassEncrypt);
                             if (b) {
                                 Account_Id = account_control.GetAccountID(username);
                                 if (checkBox.isChecked()) {
+
+                                    // SET REMEMBER ACCOUNT
                                     account_control.SetRememberAccount(Account_Id);
                                 } else {
                                     account_control.RemoveRemember(Account_Id);
                                 }
-                                //   Toast.makeText(LoginActivity.this, Account_Id+"", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                             } else {
@@ -110,7 +122,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         relativeLayout = (RelativeLayout) findViewById(R.id.background);
-        // relativeLayout.setBackgroundResource(R.drawable.bg);
         relativeLayout.setBackgroundResource(R.color.colorBackground);
     }
 

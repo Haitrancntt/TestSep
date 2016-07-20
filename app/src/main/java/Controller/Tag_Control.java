@@ -87,12 +87,12 @@ public class Tag_Control {
     }
 
     //GET TAG ID
-    // SAI CMNR
-    public int GetTagId(String name) {
+    public int GetTagId(String name, int AccountId) {
         int output = 0;
         try {
-            PreparedStatement get = connect.prepareStatement("exec SP_GetTagId ?");
+            PreparedStatement get = connect.prepareStatement("exec SP_GetTagId ?,?");
             get.setString(1, name);
+            get.setInt(2, AccountId);
             // int i = get.executeUpdate();
             ResultSet rs = get.executeQuery();
             while (rs.next()) {

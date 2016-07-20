@@ -36,7 +36,8 @@
         android:layout_marginTop="60dp"
         android:layout_below="@+id/editText_Email"
         android:layout_centerHorizontal="true"
-        android:hint="Password" />
+        android:hint="Password"
+        android:inputType="textPassword" />
 
     <ImageButton
         android:layout_width="65dp"

@@ -24,7 +24,7 @@ import Controller.Account_Control;
  */
 public class CreateNewAccountFragment extends Fragment {
     private EditText txtName, txtEmail, txtPassword;
-    private String sName, sEmail, sPassword;
+    private String sName, sEmail, sPassword, sPassEncrypt;
     private TextView txtErrorName, txtErrorEmail, txtErrorPass;
     private ImageButton btnCreate;
     private Encryption encryption;
@@ -82,8 +82,8 @@ public class CreateNewAccountFragment extends Fragment {
                             if (account_control.CheckExisted(sEmail) == true) {
                                 txtErrorEmail.setText(R.string.existed_email);
                             } else {
-
-                                account_control.AddNewAccount(sEmail, sName, Encryption.bytesToHex(encryption.encrypt(sPassword)));
+                                sPassEncrypt = Encryption.bytesToHex(encryption.encrypt(sPassword));
+                                account_control.AddNewAccount(sEmail, sName, sPassEncrypt);
                                 Toast.makeText(getContext(), "Success", Toast.LENGTH_LONG).show();
                                 FragmentManager fragmentManager = getFragmentManager();
                                 fragmentManager.beginTransaction().replace(R.id.content_frame, new AccountFragment()).commit();

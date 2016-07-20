@@ -15,7 +15,8 @@
         android:layout_marginRight="30dp"
         android:layout_marginTop="280dp"
         android:background="@drawable/rounded_edittext"
-        android:hint="Name..." />
+        android:hint="Name..."
+        android:singleLine="true"/>
 
     <EditText
         android:id="@+id/txtPass"
@@ -27,7 +28,8 @@
         android:layout_marginTop="15dp"
         android:background="@drawable/rounded_edittext"
         android:hint="Password..."
-        android:password="true" />
+        android:singleLine="true"
+        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/buttonlogin"

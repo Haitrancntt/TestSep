@@ -113,7 +113,7 @@ public class TagFragment extends Fragment {
         final EditText EditText = new EditText(getContext());
         EditText.setText(sEdit);
         alert.setView(EditText);
-        tagId = tag_control.GetTagId(sEdit);
+        tagId = tag_control.GetTagId(sEdit,accountID);
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -136,7 +136,7 @@ public class TagFragment extends Fragment {
     public void AlertDelete(String title, String name) {
         final AlertDialog.Builder alertdelete = new AlertDialog.Builder(getContext());
         alertdelete.setTitle(title);
-        final int Tag_id = tag_control.GetTagId(name);
+        final int Tag_id = tag_control.GetTagId(name,accountID);
         alertdelete.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

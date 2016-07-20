@@ -178,6 +178,7 @@ public class Account_Control {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return account;
     }

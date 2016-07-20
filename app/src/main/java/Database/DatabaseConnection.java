@@ -15,7 +15,7 @@ public class DatabaseConnection {
     private String ip, db, un, pass;
 
     public DatabaseConnection() {
-        //ip = "135.234.238.136";
+        //ip = "10.11.27.111";
         ip = "cmu.vanlanguni.edu.vn";
         db = "huyle32";
         un = "huyle32";

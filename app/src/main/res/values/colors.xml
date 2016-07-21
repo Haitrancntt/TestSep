@@ -9,4 +9,13 @@
     <color name="colorAlert">#ff3300</color>
     <color name="colorTextLogin">#ffffff</color>
     <color name="colorSideText">#bdbdbd</color>
+    //COLOR FOR ICON NAVIGATION
+    <color name="color_ic_home">#ff3300</color>
+    <color name="color_ic_task">#6ab344</color>
+    <color name="color_ic_clock">#3399ff</color>
+    <color name="color_ic_tag">#ff6600</color>
+    <color name="color_ic_report">#000000</color>
+    <color name="color_ic_account">#ffff00</color>
+    <color name="color_ic_setting">#ff99ff</color>
+    <color name="color_ic_logout">#ff9966</color>
 </resources>

@@ -4,7 +4,9 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_account"
-            android:title="Account"></item>
+            android:icon="@drawable/ic_account"
+            android:title="Account"
+            ></item>
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
@@ -15,7 +17,7 @@
             android:title="Task" />
         <item
             android:id="@+id/nav_time"
-            android:icon="@drawable/ic_clock"
+            android:icon="@drawable/ic_time"
             android:title="Time" />
         <item
             android:id="@+id/nav_tag"
@@ -27,7 +29,7 @@
             android:title="Report" />
     </group>
 
-    <item android:title="Setting">
+    <item android:title="Control">
         <menu>
             <item
                 android:id="@+id/nav_setting"

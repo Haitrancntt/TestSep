@@ -18,6 +18,7 @@ public class Task_Control {
         this.connection = connection;
     }
 
+    //LOAD LIST TASK
     public ArrayList<Task> LoadList(int acc_id) {
         ArrayList<Task> list = new ArrayList<Task>();
         try {
@@ -35,6 +36,8 @@ public class Task_Control {
         return list;
     }
 
+
+    //CHECK EXISTED TASK
     public boolean CheckExistedTask(int acc_id, String taskName) {
         boolean b = false;
         try {
@@ -55,6 +58,7 @@ public class Task_Control {
         return b;
     }
 
+    // ADD TASK
     public boolean AddTask(String name, int tagId, int accountID) {
         boolean b = false;
         try {
@@ -70,5 +74,58 @@ public class Task_Control {
             e.printStackTrace();
         }
         return b;
+    }
+
+    // EDIT TASK
+    public boolean EditTask(String Name, int ID, int TagId) {
+        try {
+            //  PreparedStatement Pedit = connect.prepareStatement("exec SP_TAG_UPDATE "+SID+",'"+Name+"'");
+            PreparedStatement Pedit = connection.prepareStatement("exec SP_TASK_UPDATE ?,?,?");
+            Pedit.setInt(1, ID);
+            Pedit.setInt(2, TagId);
+            Pedit.setString(3, Name);
+            int i = Pedit.executeUpdate();
+            if (i == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    //GET TASK ID BY NAME
+    public int GetTaskIDByName(String name, int acc_id) throws Exception {
+        try {
+            PreparedStatement query = connection.prepareStatement("select id from task where name = '" + name + "' and account_id = " + acc_id);
+            ResultSet resultSet = query.executeQuery();
+            int i = 0;
+            while (resultSet.next()) {
+                i = resultSet.getInt("id");
+            }
+            return i;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception("query sai");
+        }
+    }
+
+    // DELETE TASK
+    public boolean DeleteTag(int SID) {
+        try {
+            PreparedStatement delete = connection.prepareStatement("exec SP_TASK_DELETE ?");
+            delete.setInt(1, SID);
+            int i = delete.executeUpdate();
+            if (i == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

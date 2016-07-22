@@ -142,6 +142,7 @@ public class Account_Control {
         return output;
     }
 
+    //LOAD LIST USERNAME
     public ArrayList<String> LoadList() {
         ArrayList<String> arrayList = new ArrayList<String>();
         try {
@@ -156,7 +157,7 @@ public class Account_Control {
         return arrayList;
     }
 
-    //Save account with remember checked
+    //SAVE ACCOUNT WITH REMEMBER
     public void SetRememberAccount(int acc_id) {
         try {
             PreparedStatement query = connect.prepareStatement("exec sp_account_remember " + acc_id);
@@ -166,7 +167,7 @@ public class Account_Control {
         }
     }
 
-    //Load account remembered
+    //LOAD ACCOUNT REMEMBER
     public Account GetRememberedAccount() {
         Account account = new Account();
         try {
@@ -183,7 +184,7 @@ public class Account_Control {
         return account;
     }
 
-    //remove remembered account
+    //REMOVE REMEMBER ACCOUNT
     public void RemoveRemember(int acc_id) {
         try {
             PreparedStatement query = connect.prepareStatement("exec sp_account_disremember " + acc_id);
@@ -193,7 +194,7 @@ public class Account_Control {
         }
     }
 
-    //search account
+    //SEARCH ACCOUNT
     public ArrayList<String> Search(String name) {
         ArrayList<String> arrayList = new ArrayList<String>();
         try {
@@ -208,7 +209,7 @@ public class Account_Control {
         return arrayList;
     }
 
-    //Reset password
+    //RESET PASSWORD
     public void ResetPassword(int acc_id) {
         try {
             PreparedStatement query = connect.prepareStatement("exec SP_ACCOUNT_RESET " + acc_id);
@@ -216,6 +217,23 @@ public class Account_Control {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public String GetName(int iAccountId) {
+        String output = null;
+        try {
+            PreparedStatement get = connect.prepareStatement("select name from Account where Id = " + iAccountId);
+            get.setInt(1, iAccountId);
+            // int i = get.executeUpdate();
+            ResultSet rs = get.executeQuery();
+            while (rs.next()) {
+                output = rs.getString(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return output;
     }
 }
 

@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,6 +108,25 @@ public class ResetPassFragment extends android.support.v4.app.Fragment {
         arrayList = account_control.LoadList();
         adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, arrayList);
         listView.setAdapter(adapter);
+    }
+
+    //ON BACK PRESSED
+    @Override
+    public void onResume() {
+        super.onResume();
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                if (keyEvent.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    FragmentManager fm = getFragmentManager();
+                    fm.beginTransaction().replace(R.id.content_frame, new AccountFragment()).commit();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
 }

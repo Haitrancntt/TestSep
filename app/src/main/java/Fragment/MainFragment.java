@@ -39,16 +39,4 @@ public class MainFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        btnAdd = (ImageButton) getActivity().findViewById(R.id.imageButtonMain);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.content_frame, new CreateTaskFragment()).commit();
-            }
-        });
-    }
 }

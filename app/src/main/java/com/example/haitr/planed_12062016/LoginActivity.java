@@ -1,6 +1,7 @@
 package com.example.haitr.planed_12062016;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
@@ -85,6 +86,11 @@ public class LoginActivity extends AppCompatActivity {
                             boolean b = account_control.CheckLogin(username, sPassEncrypt);
                             if (b) {
                                 Account_Id = account_control.GetAccountID(username);
+                               /* // GET NAME
+                                Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
+                                myIntent.putExtra("name", account_control.GetName(Account_Id));
+                                startActivity(myIntent);
+                                ///*/
                                 if (checkBox.isChecked()) {
 
                                     // SET REMEMBER ACCOUNT
@@ -121,8 +127,6 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-        relativeLayout = (RelativeLayout) findViewById(R.id.background);
-        relativeLayout.setBackgroundResource(R.color.colorBackground);
     }
 
 

@@ -1,6 +1,7 @@
 package Fragment;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,16 +18,19 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import com.example.haitr.planed_12062016.LoginActivity;
 import com.example.haitr.planed_12062016.R;
 
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 import Adapter.TaskAdapter;
 import Class.Task;
@@ -45,19 +50,13 @@ public class TaskFragment extends Fragment {
     private Tag_Control tag_control;
     private int accountID, tagId, taskId;
     private Adapter sAdapter;
-    private Task task;
+    private String sSelectedItem;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_task, container, false);
-/*        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                tagId = tag_control.GetTagId(arrayList.get(i).getTag_name(), accountID);
 
-            }
-        });*/
         return view;
     }
 
@@ -112,28 +111,31 @@ public class TaskFragment extends Fragment {
      * @param TagID // id of tag
      */
     public void AlertEdit(String item, final String sEdit, int ID, int TagID) throws Exception {
-        final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-        alert.setTitle(item);
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View alertView = inflater.inflate(R.layout.dialog_edit, null);
+
         // GET NAME
-        final EditText EditText = new EditText(getContext());
-        EditText.setText(sEdit);
-        alert.setView(EditText);
-        //GET TAG ID
+        final EditText editText = (EditText) alertView.findViewById(R.id.editTag);
+        final Spinner spinner = (Spinner) alertView.findViewById(R.id.spinner);
+        editText.setText(sEdit);
 
         //GET TASK ID
         taskId = task_control.GetTaskIDByName(sEdit, accountID);
-        //CREATE SPINNER
-        AlertDialog alertDialog = alert.create();
-       Spinner spinner = (Spinner) alertDialog.findViewById(R.id.Spinner);
+
+        //GET VALUE INTO SPINNER
         stringArrayList = tag_control.LoadList(accountID);
         sAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, stringArrayList);
-        spinner.setAdapter(adapter);
-        alert.setView(spinner);
+        spinner.setAdapter((SpinnerAdapter) sAdapter);
+        spinner.setSelection(tagId);
+        sSelectedItem = spinner.getSelectedItem().toString();
+        final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+        alert.setTitle(item);
+        alert.setView(alertView);
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //tag_control.EditTag(EditText.getText().toString(), tagId);
-                task_control.EditTask(EditText.getText().toString(), taskId, tagId);
+                tag_control.EditTag(sSelectedItem, tagId);
+                task_control.EditTask(editText.getText().toString(), taskId, tagId);
                 Toast.makeText(getContext(), R.string.edit_tag_success, Toast.LENGTH_LONG).show();
                 LoadList();
             }
@@ -144,7 +146,7 @@ public class TaskFragment extends Fragment {
                 dialog.cancel();
             }
         });
-
+        AlertDialog alertDialog = alert.create();
         alertDialog.show();
     }
 
@@ -180,8 +182,6 @@ public class TaskFragment extends Fragment {
         String[] menuItems = getResources().getStringArray(R.array.menu);
 
         try {
-            //GET TAG ID
-            // tagId = tag_control.GetTagId(sEdit, accountID);
             //GET TASK ID
             taskId = task_control.GetTaskIDByName(sEdit, accountID);
         } catch (Exception e) {
@@ -197,12 +197,31 @@ public class TaskFragment extends Fragment {
                 break;
             case 1:
                 try {
-                    AlertDelete(menuItems[1], sEdit,taskId);
+                    AlertDelete(menuItems[1], sEdit, taskId);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
         }
         return true;
+    }
+
+    //ON BACK PRESSED
+    @Override
+    public void onResume() {
+        super.onResume();
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                if (keyEvent.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    FragmentManager fm = getFragmentManager();
+                    fm.beginTransaction().replace(R.id.content_frame, new MainFragment()).commit();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 }

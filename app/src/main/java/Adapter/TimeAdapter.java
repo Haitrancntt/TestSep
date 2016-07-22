@@ -1,6 +1,7 @@
 package Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,12 @@ public class TimeAdapter extends BaseAdapter {
     Context context;
     int layout;
     ArrayList<Time> arrayList;
+
+    public TimeAdapter(Context context, int layout, ArrayList<Time> arrayList) {
+        this.context = context;
+        this.layout = layout;
+        this.arrayList = arrayList;
+    }
 
     @Override
     public int getCount() {
@@ -48,14 +55,40 @@ public class TimeAdapter extends BaseAdapter {
         TextView txtAcMin = (TextView) convertView.findViewById(R.id.acMin);
         TextView txtStart = (TextView) convertView.findViewById(R.id.startTime);
         TextView txtEnd = (TextView) convertView.findViewById(R.id.endTime);
+        TextView txtId = (TextView) convertView.findViewById(R.id.id);
+        TextView txtRun = (TextView) convertView.findViewById(R.id.run);
+        TextView txtDone = (TextView) convertView.findViewById(R.id.done);
+        // dau -
+        TextView txt = (TextView) convertView.findViewById(R.id.textView12);
+        //
         txtTag.setText(arrayList.get(position).getTagName());
         txtTask.setText(arrayList.get(position).getTaskName());
-        txtEsHour.setText(arrayList.get(position).getEsHour());
-        txtEsMin.setText(arrayList.get(position).getEsMin());
-        txtAcHour.setText(arrayList.get(position).getAcHour());
-        txtAcMin.setText(arrayList.get(position).getAcMin());
+        txtEsHour.setText(String.format("%02d", arrayList.get(position).getEsHour()));
+        txtEsMin.setText(String.format("%02d", arrayList.get(position).getEsMin()));
+        txtAcHour.setText(String.format("%02d", arrayList.get(position).getAcHour()));
+        txtAcMin.setText(String.format("%02d", arrayList.get(position).getAcMin()));
+        /*txtEsHour.setText(String.valueOf(arrayList.get(position).getEsHour()));
+        txtEsMin.setText(String.valueOf(arrayList.get(position).getEsMin()));
+        txtAcHour.setText(String.valueOf(arrayList.get(position).getAcHour()));
+        txtAcMin.setText(String.valueOf(arrayList.get(position).getAcMin()));*/
         txtStart.setText(arrayList.get(position).getStart());
         txtEnd.setText(arrayList.get(position).getEnd());
+        txtId.setText(String.valueOf(arrayList.get(position).getId()));
+        txtId.setVisibility(View.INVISIBLE);
+        txtRun.setText(String.valueOf(arrayList.get(position).getRun()));
+        txtRun.setVisibility(View.INVISIBLE);
+        if (txtRun.getText().toString().equals("1")) {
+            txtTag.setTextColor(Color.MAGENTA);
+            txt.setTextColor(Color.MAGENTA);
+            txtTask.setTextColor(Color.MAGENTA);
+        }
+        txtDone.setText(String.valueOf(arrayList.get(position).getDone()));
+        txtDone.setVisibility(View.INVISIBLE);
+        if (txtDone.getText().toString().equals("1")) {
+            txtTag.setTextColor(Color.GREEN);
+            txt.setTextColor(Color.GREEN);
+            txtTask.setTextColor(Color.GREEN);
+        }
         return convertView;
     }
 }

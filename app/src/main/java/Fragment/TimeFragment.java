@@ -12,12 +12,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.haitr.planed_12062016.LoginActivity;
 import com.example.haitr.planed_12062016.R;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+
+import Adapter.TimeAdapter;
+import Class.Time;
+import Controller.Time_Control;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,7 +34,12 @@ public class TimeFragment extends Fragment {
     private DatePickerDialog datePickerDialog;
     private ImageButton btnAdd;
     private TextView txtTime;
-
+    private String sDate;
+    private int accountID;
+    private Time_Control time_control;
+    private ArrayList<Time> arrayList;
+    private TimeAdapter adapter;
+    private ListView listView;
     public TimeFragment() {
         // Required empty public constructor
     }
@@ -47,6 +59,9 @@ public class TimeFragment extends Fragment {
         btnAdd = (ImageButton) getActivity().findViewById(R.id.imageButtonTime);
         txtTime = (TextView) getActivity().findViewById(R.id.textViewTime);
         txtTime.setText("");
+        listView = (ListView) getActivity().findViewById(R.id.listView);
+        time_control = new Time_Control(LoginActivity.db.getConnection());
+        accountID = LoginActivity.Account_Id;
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,10 +84,13 @@ public class TimeFragment extends Fragment {
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         txtTime.setText(dayOfMonth + "/"
                                 + (monthOfYear + 1) + "/" + year);
+                        sDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+                        LoadList(accountID, sDate);
 
                     }
                 }, mYear, mMonth, mDay);
                 datePickerDialog.show();
+
             }
         });
 
@@ -114,5 +132,12 @@ public class TimeFragment extends Fragment {
                 return false;
             }
         });
+    }
+
+    public void LoadList(int accId, String date) {
+        arrayList = time_control.LoadTime(accId, date);
+        adapter = new TimeAdapter(getActivity(), R.layout.layout_time, arrayList);
+        listView.setAdapter(adapter);
+
     }
 }

@@ -4,11 +4,14 @@ package Class;
  * Created by Thanh Huy on 7/22/2016.
  */
 public class Time {
+    private int id;
     private String tagName, taskName;
     private int esHour, esMin, acHour, acMin;
     private String start, end;
+    private int run, done;
 
-    public Time(String tagName, String taskName, int esHour, int esMin, int acHour, int acMin, String start, String end) {
+    public Time(int id, String tagName, String taskName, int esHour, int esMin, int acHour, int acMin, String start, String end, int run, int done) {
+        this.id = id;
         this.tagName = tagName;
         this.taskName = taskName;
         this.esHour = esHour;
@@ -17,6 +20,16 @@ public class Time {
         this.acMin = acMin;
         this.start = start;
         this.end = end;
+        this.run = run;
+        this.done = done;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTagName() {
@@ -81,5 +94,21 @@ public class Time {
 
     public void setEnd(String end) {
         this.end = end;
+    }
+
+    public int getRun() {
+        return run;
+    }
+
+    public void setRun(int run) {
+        this.run = run;
+    }
+
+    public int getDone() {
+        return done;
+    }
+
+    public void setDone(int done) {
+        this.done = done;
     }
 }

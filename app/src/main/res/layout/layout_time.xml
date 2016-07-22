@@ -138,9 +138,11 @@
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView15"
-        android:layout_toEndOf="@+id/taskName"
-        android:layout_toRightOf="@+id/taskName"
+        android:layout_alignTop="@+id/tagName"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@+id/textView14"
+        android:layout_toRightOf="@+id/textView14"
         android:text="-"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -149,6 +151,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/textView15"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="14dp"
         android:layout_toEndOf="@+id/textView12"
         android:layout_toRightOf="@+id/textView12"
         android:text="Tag"
@@ -178,9 +182,9 @@
         android:id="@+id/startTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView14"
-        android:layout_alignLeft="@+id/tagName"
-        android:layout_alignStart="@+id/tagName"
+        android:layout_above="@+id/textView17"
+        android:layout_toEndOf="@+id/textView15"
+        android:layout_toRightOf="@+id/textView15"
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -189,9 +193,41 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/textView17"
-        android:layout_toEndOf="@+id/textView12"
-        android:layout_toRightOf="@+id/textView12"
+        android:layout_alignLeft="@+id/startTime"
+        android:layout_alignStart="@+id/startTime"
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView15"
+        android:layout_toEndOf="@+id/tagName"
+        android:layout_toRightOf="@+id/tagName"
+        android:text="id"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/run"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView20"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@+id/textView20"
+        android:layout_toRightOf="@+id/textView20"
+        android:text="run"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView26"
+        android:layout_alignLeft="@+id/run"
+        android:layout_alignStart="@+id/run"
+        android:text="done"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

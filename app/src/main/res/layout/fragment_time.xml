@@ -11,12 +11,12 @@
         android:id="@+id/imageButtonTime_Calendar"
         android:layout_width="65dp"
         android:layout_height="65dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="76dp"
-        android:background="@drawable/ic_calendar"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:background="@drawable/ic_calendar" />
 
 
     <EditText
@@ -42,43 +42,53 @@
         android:background="@drawable/ic_addtask" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Set Time"
         android:id="@+id/textView4"
-        android:textSize="30dp"
-        android:theme="@style/AlertDialog.AppCompat"
-        android:textColor="@color/colorText"
-        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:text="Set Time"
+        android:textColor="@color/colorText"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:theme="@style/AlertDialog.AppCompat" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Time"
         android:id="@+id/textView2"
-        android:layout_below="@+id/imageButtonTime_Calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignStart="@+id/imageButtonTime_Calendar"
+        android:layout_below="@+id/imageButtonTime_Calendar"
         android:layout_marginLeft="10dp"
+        android:text="Time"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/colorText"
-        android:textStyle="bold"
         android:textSize="20dp"
+        android:textStyle="bold"
         />
 
     <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Task"
-        android:id="@+id/textView3"
-        android:layout_below="@+id/imageButtonTime"
         android:layout_alignEnd="@+id/imageButtonTime"
+        android:layout_below="@+id/imageButtonTime"
         android:layout_marginRight="10dp"
+        android:text="Task"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/colorText"
-        android:textStyle="bold"
         android:textSize="20dp"
+        android:textStyle="bold"
         />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/editText4"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

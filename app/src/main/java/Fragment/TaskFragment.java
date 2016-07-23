@@ -3,6 +3,7 @@ package Fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -48,9 +49,11 @@ public class TaskFragment extends Fragment {
     private ListView listView;
     private Task_Control task_control;
     private Tag_Control tag_control;
-    private int accountID, tagId, taskId;
+    private int accountID, tagId, taskId, tagIdCurrent;
     private Adapter sAdapter;
-    private String sSelectedItem;
+    private String sSelectedItem, sNametag;
+    private Spinner spinner;
+    private EditText editText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,7 +97,8 @@ public class TaskFragment extends Fragment {
         if (v.getId() == listView.getId()) {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
             menu.setHeaderTitle(arrayList.get(info.position).getName());
-            tagId = tag_control.GetTagId(arrayList.get(info.position).getTag_name(), accountID);
+            sNametag = arrayList.get(info.position).getTag_name();
+            // tagId = tag_control.GetTagId(arrayList.get(info.position).getTag_name(), accountID);
             String[] menuItems = getResources().getStringArray(R.array.menu);
             for (int i = 0; i < menuItems.length; i++) {
                 menu.add(Menu.NONE, i, i, menuItems[i]);
@@ -115,8 +119,8 @@ public class TaskFragment extends Fragment {
         View alertView = inflater.inflate(R.layout.dialog_edit, null);
 
         // GET NAME
-        final EditText editText = (EditText) alertView.findViewById(R.id.editTag);
-        final Spinner spinner = (Spinner) alertView.findViewById(R.id.spinner);
+        editText = (EditText) alertView.findViewById(R.id.editTag);
+        spinner = (Spinner) alertView.findViewById(R.id.spinner);
         editText.setText(sEdit);
 
         //GET TASK ID
@@ -124,17 +128,19 @@ public class TaskFragment extends Fragment {
 
         //GET VALUE INTO SPINNER
         stringArrayList = tag_control.LoadList(accountID);
+        tagIdCurrent = stringArrayList.indexOf(sNametag);
         sAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, stringArrayList);
         spinner.setAdapter((SpinnerAdapter) sAdapter);
-        spinner.setSelection(tagId);
-        sSelectedItem = spinner.getSelectedItem().toString();
+        spinner.setSelection(tagIdCurrent);
+        //sSelectedItem = spinner.getSelectedItem().toString();
         final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
         alert.setTitle(item);
         alert.setView(alertView);
+
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                tag_control.EditTag(sSelectedItem, tagId);
+                tagId = tag_control.GetTagId(spinner.getSelectedItem().toString(), accountID);
                 task_control.EditTask(editText.getText().toString(), taskId, tagId);
                 Toast.makeText(getContext(), R.string.edit_tag_success, Toast.LENGTH_LONG).show();
                 LoadList();
@@ -183,6 +189,9 @@ public class TaskFragment extends Fragment {
 
         try {
             //GET TASK ID
+            // tagId = tag_control.GetTagId(sSelectedItem, accountID);
+           // tagId = tag_control.GetTagId(spinner.getSelectedItem().toString(), accountID);
+
             taskId = task_control.GetTaskIDByName(sEdit, accountID);
         } catch (Exception e) {
             e.printStackTrace();

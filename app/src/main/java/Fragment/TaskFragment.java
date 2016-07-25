@@ -3,7 +3,6 @@ package Fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -31,7 +29,6 @@ import com.example.haitr.planed_12062016.LoginActivity;
 import com.example.haitr.planed_12062016.R;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 import Adapter.TaskAdapter;
 import Class.Task;
@@ -66,7 +63,7 @@ public class TaskFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        btnadd = (ImageButton) getActivity().findViewById(R.id.imageButtonTask);
+        btnadd = (ImageButton) getActivity().findViewById(R.id.imageButtonTag);
         listView = (ListView) getActivity().findViewById(R.id.listview_Task);
         task_control = new Task_Control(LoginActivity.db.getConnection());
         tag_control = new Tag_Control(LoginActivity.db.getConnection());

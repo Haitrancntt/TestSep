@@ -2,6 +2,9 @@ package Fragment;
 
 
 import android.content.DialogInterface;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -46,14 +49,15 @@ public class TagFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tag, container, false);
+        View view = inflater.inflate(R.layout.fragment_tag, container, false);
+        return view;
     }
 
     // ADD ALL TO ACTIVITY
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        btnAdd = (ImageButton) getActivity().findViewById(R.id.imageButtonTask);
+        btnAdd = (ImageButton) getActivity().findViewById(R.id.imageButtonTag);
         listView = (ListView) getActivity().findViewById(R.id.listview_Tag);
         txtName = (EditText) getActivity().findViewById(R.id.edit_newtag);
         tag_control = new Tag_Control(LoginActivity.db.getConnection());
@@ -115,7 +119,7 @@ public class TagFragment extends Fragment {
         final EditText EditText = new EditText(getContext());
         EditText.setText(sEdit);
         alert.setView(EditText);
-        tagId = tag_control.GetTagId(sEdit,accountID);
+        tagId = tag_control.GetTagId(sEdit, accountID);
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -138,7 +142,7 @@ public class TagFragment extends Fragment {
     public void AlertDelete(String title, String name) {
         final AlertDialog.Builder alertdelete = new AlertDialog.Builder(getContext());
         alertdelete.setTitle(title);
-        final int Tag_id = tag_control.GetTagId(name,accountID);
+        final int Tag_id = tag_control.GetTagId(name, accountID);
         alertdelete.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

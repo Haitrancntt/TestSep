@@ -1,9 +1,11 @@
 package Class;
 
+import java.io.Serializable;
+
 /**
  * Created by Thanh Huy on 7/14/2016.
  */
-public class Task {
+public class Task implements Serializable {
     private String tag_name;
     private String name;
 

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/searchView3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="Choose a Task"
+        android:textColor="@color/colorText"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:theme="@style/AlertDialog.AppCompat" />
+
+    <SearchView
+        android:id="@+id/searchView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true" />
+
+    <ListView
+        android:id="@+id/listTaskChoosing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/searchView3"
+        android:layout_marginTop="15dp" />
+</RelativeLayout>

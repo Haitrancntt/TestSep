@@ -14,7 +14,6 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.haitr.planed_12062016.LoginActivity;
 import com.example.haitr.planed_12062016.R;
@@ -66,8 +65,8 @@ public class TimeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.content_frame, new TaskFragment()).commit();
-                Toast.makeText(getContext(), "Set Time", Toast.LENGTH_SHORT).show();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, new ChooseTaskFragment()).commit();
+
             }
         });
 

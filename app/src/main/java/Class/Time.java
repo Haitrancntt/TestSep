@@ -1,9 +1,11 @@
 package Class;
 
+import java.io.Serializable;
+
 /**
  * Created by Thanh Huy on 7/22/2016.
  */
-public class Time {
+public class Time implements Serializable {
     private int id;
     private String tagName, taskName;
     private int esHour, esMin, acHour, acMin;

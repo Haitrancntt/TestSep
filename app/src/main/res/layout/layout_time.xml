@@ -36,7 +36,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/esHour"
+        android:id="@+id/iEsHour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/textView16"
@@ -49,13 +49,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/textView16"
-        android:layout_toEndOf="@+id/esHour"
-        android:layout_toRightOf="@+id/esHour"
+        android:layout_toEndOf="@+id/iEsHour"
+        android:layout_toRightOf="@+id/iEsHour"
         android:text="hrs"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/esMin"
+        android:id="@+id/iEsMin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/textView21"
@@ -68,9 +68,9 @@
         android:id="@+id/textView20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/esMin"
-        android:layout_toEndOf="@+id/esMin"
-        android:layout_toRightOf="@+id/esMin"
+        android:layout_alignBottom="@+id/iEsMin"
+        android:layout_toEndOf="@+id/iEsMin"
+        android:layout_toRightOf="@+id/iEsMin"
         android:text="mins"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 

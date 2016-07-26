@@ -52,14 +52,16 @@
 
     <ImageButton
         android:id="@+id/imageButton_CreateNewTask"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/spinner"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
-        android:layout_marginTop="140dp"
-        android:background="@drawable/ic_save" />
+        android:layout_marginTop="100dp"
+        android:background="@drawable/ic_save"
+        android:layout_marginRight="140dp"
+        android:layout_marginLeft="140dp" />
 
     <TextView
         android:id="@+id/textView6"

@@ -73,13 +73,17 @@ public class CreateTaskFragment extends Fragment {
                 }
                 boolean b = task_control.CheckExistedTask(accountID, taskName);
                 if (b) {
-                    // do something
+                    Toast.makeText(getActivity(), R.string.existed_tag, Toast.LENGTH_SHORT).show();
                 } else {
-                    boolean b1 = task_control.AddTask(taskName, tagId, accountID);
-                    if (b1) {
-                        FragmentManager fragmentManager = getFragmentManager();
-                        fragmentManager.beginTransaction().replace(R.id.content_frame, new TaskFragment()).commit();
-                        Toast.makeText(getActivity(), "Add Task Successfully", Toast.LENGTH_SHORT).show();
+                    if (taskName.equals("")) {
+                        Toast.makeText(getActivity(), R.string.null_space, Toast.LENGTH_SHORT).show();
+                    } else {
+                        boolean b1 = task_control.AddTask(taskName, tagId, accountID);
+                        if (b1) {
+                            FragmentManager fragmentManager = getFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.content_frame, new TaskFragment()).commit();
+                            Toast.makeText(getActivity(), "Add Task Successfully", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
 

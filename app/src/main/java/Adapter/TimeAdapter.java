@@ -49,8 +49,8 @@ public class TimeAdapter extends BaseAdapter {
         convertView = inflater.inflate(R.layout.layout_time, null);
         TextView txtTag = (TextView) convertView.findViewById(R.id.tagName);
         TextView txtTask = (TextView) convertView.findViewById(R.id.taskName);
-        TextView txtEsHour = (TextView) convertView.findViewById(R.id.esHour);
-        TextView txtEsMin = (TextView) convertView.findViewById(R.id.esMin);
+        TextView txtEsHour = (TextView) convertView.findViewById(R.id.iEsHour);
+        TextView txtEsMin = (TextView) convertView.findViewById(R.id.iEsMin);
         TextView txtAcHour = (TextView) convertView.findViewById(R.id.acHour);
         TextView txtAcMin = (TextView) convertView.findViewById(R.id.acMin);
         TextView txtStart = (TextView) convertView.findViewById(R.id.startTime);
@@ -67,27 +67,29 @@ public class TimeAdapter extends BaseAdapter {
         txtEsMin.setText(String.format("%02d", arrayList.get(position).getEsMin()));
         txtAcHour.setText(String.format("%02d", arrayList.get(position).getAcHour()));
         txtAcMin.setText(String.format("%02d", arrayList.get(position).getAcMin()));
-        /*txtEsHour.setText(String.valueOf(arrayList.get(position).getEsHour()));
-        txtEsMin.setText(String.valueOf(arrayList.get(position).getEsMin()));
+        /*txtEsHour.setText(String.valueOf(arrayList.get(position).getiEsHour()));
+        txtEsMin.setText(String.valueOf(arrayList.get(position).getiEsMin()));
         txtAcHour.setText(String.valueOf(arrayList.get(position).getAcHour()));
         txtAcMin.setText(String.valueOf(arrayList.get(position).getAcMin()));*/
         txtStart.setText(arrayList.get(position).getStart());
         txtEnd.setText(arrayList.get(position).getEnd());
+        //INVISIBLE ID
         txtId.setText(String.valueOf(arrayList.get(position).getId()));
         txtId.setVisibility(View.INVISIBLE);
+        //INVISIBLE RUNNING STATUS
         txtRun.setText(String.valueOf(arrayList.get(position).getRun()));
         txtRun.setVisibility(View.INVISIBLE);
         if (txtRun.getText().toString().equals("1")) {
-            txtTag.setTextColor(Color.MAGENTA);
-            txt.setTextColor(Color.MAGENTA);
-            txtTask.setTextColor(Color.MAGENTA);
+            txtTag.setTextColor(Color.rgb(198,34,34));
+            txt.setTextColor(Color.rgb(198,34,34));
+            txtTask.setTextColor(Color.rgb(198,34,34));
         }
         txtDone.setText(String.valueOf(arrayList.get(position).getDone()));
         txtDone.setVisibility(View.INVISIBLE);
         if (txtDone.getText().toString().equals("1")) {
-            txtTag.setTextColor(Color.GREEN);
-            txt.setTextColor(Color.GREEN);
-            txtTask.setTextColor(Color.GREEN);
+            txtTag.setTextColor(Color.rgb(16,254,241));
+            txt.setTextColor(Color.rgb(16,254,241));
+            txtTask.setTextColor(Color.rgb(16,254,241));
         }
         return convertView;
     }

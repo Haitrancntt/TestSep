@@ -1,5 +1,6 @@
 package com.example.haitr.planed_12062016;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     private Account_Control account_control;
     private Encryption encryption;
     private String sPassEncrypt, sPassDecrypt;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,16 +85,15 @@ public class LoginActivity extends AppCompatActivity {
                     if (b2) {
                         boolean b1 = account_control.CheckUsername(username);
                         if (b1) {
+
                             boolean b = account_control.CheckLogin(username, sPassEncrypt);
                             if (b) {
                                 Account_Id = account_control.GetAccountID(username);
-                               /* // GET NAME
-                                Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
-                                myIntent.putExtra("name", account_control.GetName(Account_Id));
-                                startActivity(myIntent);
-                                ///*/
+                                progressDialog = new ProgressDialog(LoginActivity.this, R.style.AppTheme_Dark_Dialog);
+                                progressDialog.setIndeterminate(true);
+                                progressDialog.setMessage("Authentication...");
+                                progressDialog.show();
                                 if (checkBox.isChecked()) {
-
                                     // SET REMEMBER ACCOUNT
                                     account_control.SetRememberAccount(Account_Id);
                                 } else {

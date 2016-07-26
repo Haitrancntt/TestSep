@@ -11,15 +11,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import Controller.Account_Control;
 import Fragment.AccountFragment;
 import Fragment.MainFragment;
 import Fragment.TagFragment;
 import Fragment.TaskFragment;
 import Fragment.TimeFragment;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +25,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-/*
-        account_control = new Account_Control(LoginActivity.db.getConnection());
-        Intent getIntent = getIntent();
-        String sName = getIntent.getStringExtra("name");
-        // iAccountId=account_control.GetAccountID();
-        final TextView txtHello = (TextView) findViewById(R.id.txtWelcome);
-        txtHello.setText("Welcome to app " + sName);*/
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -41,7 +32,37 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                FragmentManager fm = getSupportFragmentManager();
+                int id = item.getItemId();
+
+                if (id == R.id.nav_task) {
+                    fm.beginTransaction().replace(R.id.content_frame, new TaskFragment()).commit();
+                } else if (id == R.id.nav_time) {
+                    fm.beginTransaction().replace(R.id.content_frame, new TimeFragment()).commit();
+
+                } else if (id == R.id.nav_account) {
+                    fm.beginTransaction().replace(R.id.content_frame, new AccountFragment()).commit();
+                } else if (id == R.id.nav_tag) {
+                    fm.beginTransaction().replace(R.id.content_frame, new TagFragment()).commit();
+
+                } else if (id == R.id.nav_report) {
+                    Toast.makeText(MainActivity.this, "Report", Toast.LENGTH_SHORT).show();
+                } else if (id == R.id.nav_setting) {
+                    Toast.makeText(MainActivity.this, "Setting", Toast.LENGTH_SHORT).show();
+
+                } else if (id == R.id.nav_logout) {
+                    Toast.makeText(MainActivity.this, "Log out", Toast.LENGTH_SHORT).show();
+                } else if (id == R.id.nav_home) {
+                    fm.beginTransaction().replace(R.id.content_frame, new MainFragment()).commit();
+                }
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, new MainFragment()).commit();
@@ -56,45 +77,5 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }*/
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        FragmentManager fm = getSupportFragmentManager();
-        int id = item.getItemId();
-
-        if (id == R.id.nav_task) {
-            fm.beginTransaction().replace(R.id.content_frame, new TaskFragment()).commit();
-        } else if (id == R.id.nav_time) {
-            fm.beginTransaction().replace(R.id.content_frame, new TimeFragment()).commit();
-
-        } else if (id == R.id.nav_account) {
-            fm.beginTransaction().replace(R.id.content_frame, new AccountFragment()).commit();
-        } else if (id == R.id.nav_tag) {
-            fm.beginTransaction().replace(R.id.content_frame, new TagFragment()).commit();
-
-        } else if (id == R.id.nav_report) {
-            Toast.makeText(MainActivity.this, "Report", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_setting) {
-            Toast.makeText(MainActivity.this, "Setting", Toast.LENGTH_SHORT).show();
-
-        } else if (id == R.id.nav_logout) {
-            Toast.makeText(MainActivity.this, "Log out", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_home) {
-            fm.beginTransaction().replace(R.id.content_frame, new MainFragment()).commit();
-        }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
 
 }

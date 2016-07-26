@@ -54,7 +54,7 @@ public class ChooseTaskFragment extends Fragment {
                 bundle.putSerializable("task", task);
                 CreateTimeFragment fragment = new CreateTimeFragment();
                 fragment.setArguments(bundle);
-                getFragmentManager().beginTransaction().replace(R.id.content_frame, new CreateTimeFragment()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
             }
         });
     }

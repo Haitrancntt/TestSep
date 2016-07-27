@@ -236,5 +236,35 @@ public class Account_Control {
         }
         return output;
     }
+
+    public String GetPassword(int accId) {
+        String s = "";
+        try {
+            PreparedStatement query = connect.prepareStatement("select Password from Account where Id = " + accId);
+            ResultSet rs = query.executeQuery();
+            while (rs.next()) {
+                s = rs.getString("Password");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return s;
+    }
+
+    public boolean ChangePassword(int accID, String newPass) {
+        boolean b = false;
+        try {
+            PreparedStatement query = connect.prepareStatement("exec SP_ACCOUNT_UPDATE ?, ?");
+            query.setInt(1, accID);
+            query.setString(2, newPass);
+            int i = query.executeUpdate();
+            if (i == 1) {
+                b = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return b;
+    }
 }
 

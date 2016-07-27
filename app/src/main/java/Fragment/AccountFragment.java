@@ -94,7 +94,8 @@ public class AccountFragment extends Fragment {
             imgbutton_ChangePass.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.content_frame, new ChangePasswordFragment()).commit();
                 }
             });
         }

@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import Class.Account;
 import Controller.Account_Control;
-import Database.DatabaseConnection;
+import utilities.DatabaseConnection;
 
 /**
  * Created by haitr on 6/12/2016.
@@ -26,20 +26,20 @@ public class LoginActivity extends AppCompatActivity {
     public static int Account_Id;
     public static DatabaseConnection db;
     public static EditText txtUS, txtPass;
+    public static CheckBox checkBox;
+    public static SharedPreferences loginRemember;
+    public static SharedPreferences.Editor loginRememberEdit;
     TextView lblus, lblpass;
     private Button btnlogin;
     private RelativeLayout relativeLayout;
     private int iPermission;
-    public static CheckBox checkBox;
     private Account account;
     private Account_Control account_control;
     private Encryption encryption;
     private String sPassEncrypt, sPassDecrypt;
     private ProgressDialog progressDialog;
-    private SharedPreferences loginRemember;
-    private SharedPreferences.Editor loginRememberEdit;
     private boolean isLoginSave;
-
+    private boolean isLogout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,10 +61,9 @@ public class LoginActivity extends AppCompatActivity {
         loginRemember = getSharedPreferences("Login", MODE_PRIVATE);
         loginRememberEdit = loginRemember.edit();
         isLoginSave = loginRemember.getBoolean("save", false);
-        if (isLoginSave) {
-            txtUS.setText(loginRemember.getString("username", ""));
-            txtPass.setText(loginRemember.getString("pass", ""));
-            checkBox.setChecked(true);
+        isLogout = loginRemember.getBoolean("logout", false);
+        if (isLoginSave == true & isLogout == false) {
+
             try {
                 Account_Id = account_control.GetAccountID(txtUS.getText().toString());
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -72,6 +71,10 @@ public class LoginActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            txtUS.setText(loginRemember.getString("username", ""));
+            txtPass.setText(loginRemember.getString("pass", ""));
+            checkBox.setChecked(true);
         }
         // BUTTON LISTENER
         btnlogin.setOnClickListener(new View.OnClickListener() {
@@ -81,57 +84,63 @@ public class LoginActivity extends AppCompatActivity {
                 lblus.setText("");
                 String username = txtUS.getText().toString();
                 String password = txtPass.getText().toString();
-                try {
+                if (txtUS.getText().length() == 0) {
+                    lblus.setText("This field cannot be empty");
+                } else if (txtPass.getText().length() == 0) {
+                    lblpass.setText("This field cannot be empty");
+                } else {
+                    try {
 
-                    sPassEncrypt = Encryption.bytesToHex(encryption.encrypt(password));
-                    boolean b2 = account_control.CheckEmail(username);
-                    if (b2) {
-                        boolean b1 = account_control.CheckUsername(username);
-                        if (b1) {
-                            boolean b = account_control.CheckLogin(username, sPassEncrypt);
-                            if (b) {
-                                Account_Id = account_control.GetAccountID(username);
-                                progressDialog = new ProgressDialog(LoginActivity.this, R.style.AppTheme_Dark_Dialog);
-                                progressDialog.setIndeterminate(true);
-                                progressDialog.setMessage("Authentication...");
-                                progressDialog.show();
-                                if (checkBox.isChecked()) {
-                                    // SET REMEMBER ACCOUNT
-                                    loginRememberEdit.putBoolean("save", true);
-                                    loginRememberEdit.putString("username", username);
-                                    loginRememberEdit.putString("pass", password);
-                                    loginRememberEdit.commit();
+                        sPassEncrypt = Encryption.bytesToHex(encryption.encrypt(password));
+                        boolean b2 = account_control.CheckEmail(username);
+                        if (b2) {
+                            boolean b1 = account_control.CheckUsername(username);
+                            if (b1) {
+                                boolean b = account_control.CheckLogin(username, sPassEncrypt);
+                                if (b) {
+                                    Account_Id = account_control.GetAccountID(username);
+                                    progressDialog = new ProgressDialog(LoginActivity.this, R.style.AppTheme_Dark_Dialog);
+                                    progressDialog.setIndeterminate(true);
+                                    progressDialog.setMessage("Authentication...");
+                                    progressDialog.show();
+                                    if (checkBox.isChecked()) {
+                                        // SET REMEMBER ACCOUNT
+                                        loginRememberEdit.putBoolean("save", true);
+                                        loginRememberEdit.putString("username", username);
+                                        loginRememberEdit.putString("pass", password);
+                                        loginRememberEdit.putBoolean("logout", false);
+                                        loginRememberEdit.commit();
+                                    } else {
+                                        loginRememberEdit.clear();
+                                        loginRememberEdit.commit();
+                                    }
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
                                 } else {
-                                    loginRememberEdit.clear();
-                                    loginRememberEdit.commit();
+                                    lblpass.setText(R.string.error_pass_login);
+                                    txtPass.setText("");
+                                    txtPass.requestFocus();
+                                    InputMethodManager imm = (InputMethodManager) getSystemService(LoginActivity.this.INPUT_METHOD_SERVICE);
+                                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
                                 }
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
                             } else {
-                                lblpass.setText(R.string.error_pass_login);
-                                txtPass.setText("");
-                                txtPass.requestFocus();
+                                lblus.setText(R.string.error_username_login);
+                                txtUS.requestFocus();
                                 InputMethodManager imm = (InputMethodManager) getSystemService(LoginActivity.this.INPUT_METHOD_SERVICE);
                                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
                             }
                         } else {
-                            lblus.setText(R.string.error_username_login);
+                            lblus.setText(R.string.error_email_login);
                             txtUS.requestFocus();
                             InputMethodManager imm = (InputMethodManager) getSystemService(LoginActivity.this.INPUT_METHOD_SERVICE);
                             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
                         }
-                    } else {
-                        lblus.setText(R.string.error_email_login);
-                        txtUS.requestFocus();
-                        InputMethodManager imm = (InputMethodManager) getSystemService(LoginActivity.this.INPUT_METHOD_SERVICE);
-                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-
             }
         });
     }

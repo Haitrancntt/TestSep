@@ -1,4 +1,4 @@
-package Database;
+package utilities;
 
 import android.annotation.SuppressLint;
 import android.os.StrictMode;

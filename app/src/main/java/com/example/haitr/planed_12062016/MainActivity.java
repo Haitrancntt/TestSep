@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Setting", Toast.LENGTH_SHORT).show();
 
                 } else if (id == R.id.nav_logout) {
+                    LoginActivity.loginRememberEdit.putBoolean("logout", true);
+                    LoginActivity.loginRememberEdit.commit();
                    /* sharedPreferences = getSharedPreferences("Current User", MODE_PRIVATE);
                     logout = sharedPreferences.edit();
                     logout.remove("Username");

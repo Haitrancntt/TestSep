@@ -1,6 +1,11 @@
 package Fragment;
 
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -42,37 +47,58 @@ public class AccountFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        account_control = new Account_Control(LoginActivity.db.getConnection());
-        iAccountId = LoginActivity.Account_Id;
-        iPermission = account_control.GetPermission(iAccountId);
-        imgbutton_CreateAccount = (ImageButton) getActivity().findViewById(R.id.imagebutton_createaccount);
-        imgbutton_ResetPass = (ImageButton) getActivity().findViewById(R.id.imagebutton_resetpass);
-        imgbutton_ChangePass = (ImageButton) getActivity().findViewById(R.id.imagebutton_changepass);
-        imgbutton_CreateAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (iPermission == 1) {
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.content_frame, new CreateNewAccountFragment()).commit();
-                } else {
-                    Toast.makeText(getContext(), "You are not allowed to do this\nPlease contact your Administator", Toast.LENGTH_SHORT).show();
+        ConnectivityManager connManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo m3g = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (mWifi.isConnected() == false & m3g.isConnected() == false) {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Error")
+                    .setMessage("Please make sure that your device is already connected to the Internet!")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            getActivity().finishAffinity();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        } else {
+            account_control = new Account_Control(LoginActivity.db.getConnection());
+            iAccountId = LoginActivity.Account_Id;
+            iPermission = LoginActivity.iPermission;
+            imgbutton_CreateAccount = (ImageButton) getActivity().findViewById(R.id.imagebutton_createaccount);
+            imgbutton_ResetPass = (ImageButton) getActivity().findViewById(R.id.imagebutton_resetpass);
+            imgbutton_ChangePass = (ImageButton) getActivity().findViewById(R.id.imagebutton_changepass);
+            imgbutton_CreateAccount.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (iPermission == 1) {
+                        fragmentManager = getFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.content_frame, new CreateNewAccountFragment()).commit();
+                    } else {
+                        Toast.makeText(getContext(), "You are not allowed to do this\nPlease contact your Administator", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
-        imgbutton_ResetPass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (iPermission == 1) {
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.content_frame, new ResetPassFragment()).commit();
-                } else {
-                    Toast.makeText(getContext(), "You are not allowed to do this\nPlease contact your Administator", Toast.LENGTH_SHORT).show();
-                }
+            });
+            imgbutton_ResetPass.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (iPermission == 1) {
+                        fragmentManager = getFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.content_frame, new ResetPassFragment()).commit();
+                    } else {
+                        Toast.makeText(getContext(), "You are not allowed to do this\nPlease contact your Administator", Toast.LENGTH_SHORT).show();
+                    }
 
-            }
-        });
+                }
+            });
+            imgbutton_ChangePass.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
     }
-
     //ON BACKED PRESS
     @Override
     public void onResume() {

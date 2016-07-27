@@ -1,10 +1,10 @@
 package Fragment;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.StateListDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -60,42 +60,58 @@ public class TagFragment extends Fragment {
         btnAdd = (ImageButton) getActivity().findViewById(R.id.imageButtonTag);
         listView = (ListView) getActivity().findViewById(R.id.listview_Tag);
         txtName = (EditText) getActivity().findViewById(R.id.edit_newtag);
-        tag_control = new Tag_Control(LoginActivity.db.getConnection());
-        accountID = LoginActivity.Account_Id;
-        registerForContextMenu(listView);
-        LoadList();
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-                                      @Override
-                                      public void onClick(View v) {
-                                          String name = txtName.getText().toString();
+        ConnectivityManager connManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo m3g = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (mWifi.isConnected() == false & m3g.isConnected() == false) {
+            new android.app.AlertDialog.Builder(getActivity())
+                    .setTitle("Error")
+                    .setMessage("Please make sure that your device is already connected to the Internet!")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            getActivity().finishAffinity();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        } else {
+            tag_control = new Tag_Control(LoginActivity.db.getConnection());
+            accountID = LoginActivity.Account_Id;
+            registerForContextMenu(listView);
+            LoadList();
+            btnAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String name = txtName.getText().toString();
 
-                                          // VALIDATE NULL
-                                          if (txtName.getText().toString().equals("")) {
-                                              Toast.makeText(getContext(), R.string.null_space, Toast.LENGTH_LONG).show();
-                                          } else {
-                                              //VALIDATE NOT NULL
-                                              boolean bCheck = tag_control.CheckTagExisted(name);
-                                              if (bCheck) {
-                                                  //CHECK EXISTED
-                                                  Toast.makeText(getContext(), R.string.existed_tag, Toast.LENGTH_LONG).show();
+                    // VALIDATE NULL
+                    if (txtName.getText().toString().equals("")) {
+                        Toast.makeText(getContext(), R.string.null_space, Toast.LENGTH_LONG).show();
                                               } else {
-                                                  //ADD TAG
-                                                  boolean b = tag_control.AddTag(name, accountID);
-                                                  if (b) {
-                                                      Toast.makeText(getContext(), R.string.add_tag_success, Toast.LENGTH_SHORT).show();
-                                                      txtName.setText("");
-                                                      LoadList();
+                        //VALIDATE NOT NULL
+                        boolean bCheck = tag_control.CheckTagExisted(name);
+                        if (bCheck) {
+                            //CHECK EXISTED
+                            Toast.makeText(getContext(), R.string.existed_tag, Toast.LENGTH_LONG).show();
                                                   } else {
-                                                      Toast.makeText(getContext(), R.string.add_tag_failed, Toast.LENGTH_SHORT).show();
+                            //ADD TAG
+                            boolean b = tag_control.AddTag(name, accountID);
+                            if (b) {
+                                Toast.makeText(getContext(), R.string.add_tag_success, Toast.LENGTH_SHORT).show();
+                                txtName.setText("");
+                                LoadList();
+                            } else {
+                                Toast.makeText(getContext(), R.string.add_tag_failed, Toast.LENGTH_SHORT).show();
 
+                            }
                                                   }
                                               }
                                           }
+
                                       }
 
-                                  }
-
-        );
+            );
+        }
     }
 
     // CREATE CONTEXT MENU FOR DELETE / EDIT

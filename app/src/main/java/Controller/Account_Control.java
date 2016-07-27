@@ -146,7 +146,7 @@ public class Account_Control {
     public ArrayList<String> LoadList() {
         ArrayList<String> arrayList = new ArrayList<String>();
         try {
-            PreparedStatement query = connect.prepareStatement("select Username from Account");
+            PreparedStatement query = connect.prepareStatement("select Username from Account where Permission = 0");
             ResultSet resultSet = query.executeQuery();
             while (resultSet.next()) {
                 arrayList.add(resultSet.getString("Username"));

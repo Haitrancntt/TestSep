@@ -1,8 +1,12 @@
 package Fragment;
 
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -48,71 +52,87 @@ public class RunTaskFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //Create time control
-        time_control = new Time_Control(LoginActivity.db.getConnection());
-
-        //Get Data
-        bgetData = getArguments();
-        timePassData = (TimePassData) bgetData.getSerializable("time");
-
-        // Declare textview
-        txtNameTask = (TextView) getActivity().findViewById(R.id.textView_NameTask_Run);
-        txtNameTag = (TextView) getActivity().findViewById(R.id.textView_Run_NameTag);
-        txtStart = (TextView) getActivity().findViewById(R.id.textView_Run_Start);
-        txtEnd = (TextView) getActivity().findViewById(R.id.textView_Run_End);
-        txtRemaining = (TextView) getActivity().findViewById(R.id.textView_Run_Remaining);
-        btnRun = (Button) getActivity().findViewById(R.id.button_Start_End);
-
-        //Set data into textview
-        txtNameTask.setText(timePassData.getTaskName());
-        txtNameTag.setText(timePassData.getTagName());
-        txtRemaining.setText(timePassData.getiEsHour() + " hrs" + timePassData.getiEsMin() + " min");
-        txtStart.setText(timePassData.getStart());
-
-        //Count down timer
-        countDownTimer = new CountDownTimer(timePassData.getiEsHour() * 3600000 + timePassData.getiEsMin() * 60000, 1000);
-
-        //Set id for status
-        iRun = timePassData.getiRun();
-        iDone = timePassData.getiDone();
-        iIdCurrent = timePassData.getId();
-        if (iRun == 1) {
-            btnRun.setText("End");
+        ConnectivityManager connManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo m3g = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (mWifi.isConnected() == false & m3g.isConnected() == false) {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Error")
+                    .setMessage("Please make sure that your device is already connected to the Internet!")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            getActivity().finishAffinity();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
         } else {
-            btnRun.setText("Start");
-        }
+            //Create time control
 
-        // Button listener
-        btnRun.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (iRun == 0) {
-                    bCheck = time_control.AddCurrentTimeStar(iIdCurrent);
-                    if (bCheck) {
-                        timePassData = time_control.LoadList(timePassData.getId());
-                        txtStart.setText(timePassData.getStart());
-                        countDownTimer.start();
-                        btnRun.setText("End");
-                    } else {
-                        Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                    }
-                } else if (iRun == 1) {
-                    cCheck = time_control.AddTimeEnd(iIdCurrent);
-                    if (cCheck) {
-                        timePassData = time_control.LoadList(timePassData.getId());
-                        txtEnd.setText(timePassData.getEnd());
-                        countDownTimer.cancel();
-                        Toast.makeText(getActivity(), "Finish", Toast.LENGTH_SHORT).show();
-                        FragmentManager fm = getFragmentManager();
-                        fm.beginTransaction().replace(R.id.content_frame, new TimeFragment()).commit();
-                    } else {
-                        Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+            time_control = new Time_Control(LoginActivity.db.getConnection());
+
+            //Get Data
+            bgetData = getArguments();
+            timePassData = (TimePassData) bgetData.getSerializable("time");
+
+            // Declare textview
+            txtNameTask = (TextView) getActivity().findViewById(R.id.textView_NameTask_Run);
+            txtNameTag = (TextView) getActivity().findViewById(R.id.textView_Run_NameTag);
+            txtStart = (TextView) getActivity().findViewById(R.id.textView_Run_Start);
+            txtEnd = (TextView) getActivity().findViewById(R.id.textView_Run_End);
+            txtRemaining = (TextView) getActivity().findViewById(R.id.textView_Run_Remaining);
+            btnRun = (Button) getActivity().findViewById(R.id.button_Start_End);
+
+            //Set data into textview
+            txtNameTask.setText(timePassData.getTaskName());
+            txtNameTag.setText(timePassData.getTagName());
+            txtRemaining.setText(timePassData.getiEsHour() + " hrs" + timePassData.getiEsMin() + " min");
+            txtStart.setText(timePassData.getStart());
+
+            //Count down timer
+            countDownTimer = new CountDownTimer(timePassData.getiEsHour() * 3600000 + timePassData.getiEsMin() * 60000, 1000);
+
+            //Set id for status
+            iRun = timePassData.getiRun();
+            iDone = timePassData.getiDone();
+            iIdCurrent = timePassData.getId();
+            if (iRun == 1) {
+                btnRun.setText("End");
+            } else {
+                btnRun.setText("Start");
+            }
+
+            // Button listener
+            btnRun.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (iRun == 0) {
+                        bCheck = time_control.AddCurrentTimeStar(iIdCurrent);
+                        if (bCheck) {
+                            timePassData = time_control.LoadList(timePassData.getId());
+                            txtStart.setText(timePassData.getStart());
+                            countDownTimer.start();
+                            btnRun.setText("End");
+                        } else {
+                            Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    } else if (iRun == 1) {
+                        cCheck = time_control.AddTimeEnd(iIdCurrent);
+                        if (cCheck) {
+                            timePassData = time_control.LoadList(timePassData.getId());
+                            txtEnd.setText(timePassData.getEnd());
+                            countDownTimer.cancel();
+                            Toast.makeText(getActivity(), "Finish", Toast.LENGTH_SHORT).show();
+                            FragmentManager fm = getFragmentManager();
+                            fm.beginTransaction().replace(R.id.content_frame, new TimeFragment()).commit();
+                        } else {
+                            Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
-
     //On backed button
     @Override
     public void onResume() {

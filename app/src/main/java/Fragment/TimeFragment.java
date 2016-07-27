@@ -1,7 +1,12 @@
 package Fragment;
 
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -61,75 +66,90 @@ public class TimeFragment extends Fragment {
         txtTime = (TextView) getActivity().findViewById(R.id.textViewTime);
         txtTime.setText("");
         listView = (ListView) getActivity().findViewById(R.id.listView);
-        time_control = new Time_Control(LoginActivity.db.getConnection());
-        accountID = LoginActivity.Account_Id;
-        calendar = Calendar.getInstance();
-        mYear = calendar.get(Calendar.YEAR); // current year
-        mMonth = calendar.get(Calendar.MONTH); // current month
-        mDay = calendar.get(Calendar.DAY_OF_MONTH); // current day
-        txtTime.setText(mDay + "/" + (mMonth + 1) + "/" + mYear);
-        sDate = mYear + "-" + (mMonth + 1) + "-" + mDay;
-        LoadList();
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.content_frame, new ChooseTaskFragment()).commit();
+        ConnectivityManager connManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo m3g = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (mWifi.isConnected() == false & m3g.isConnected() == false) {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Error")
+                    .setMessage("Please make sure that your device is already connected to the Internet!")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            getActivity().finishAffinity();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        } else {
+            time_control = new Time_Control(LoginActivity.db.getConnection());
+            accountID = LoginActivity.Account_Id;
+            calendar = Calendar.getInstance();
+            mYear = calendar.get(Calendar.YEAR); // current year
+            mMonth = calendar.get(Calendar.MONTH); // current month
+            mDay = calendar.get(Calendar.DAY_OF_MONTH); // current day
+            txtTime.setText(mDay + "/" + (mMonth + 1) + "/" + mYear);
+            sDate = mYear + "-" + (mMonth + 1) + "-" + mDay;
+            LoadList();
+            btnAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentManager fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.content_frame, new ChooseTaskFragment()).commit();
 
-            }
-        });
-
-        btnCalendar = (ImageButton) getActivity().findViewById(R.id.imageButtonTime_Calendar);
-        btnCalendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        txtTime.setText(dayOfMonth + "/"
-                                + (monthOfYear + 1) + "/" + year);
-                        sDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
-                        // LoadList(accountID, sDate);
-                        LoadList();
-                        mYear = year;
-                        mMonth = monthOfYear;
-                        mDay = dayOfMonth;
-                    }
-                }, mYear, mMonth, mDay);
-                datePickerDialog.show();
-
-            }
-        });
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String sNameTask = arrayList.get(i).getTaskName();
-                String sNameTag = arrayList.get(i).getTagName();
-                String sStart = arrayList.get(i).getStart();
-                String sEnd = arrayList.get(i).getEnd();
-                int iId = arrayList.get(i).getId();
-                int iEsMinute = arrayList.get(i).getEsMin();
-                int iEsHour = arrayList.get(i).getEsHour();
-                int iRun = arrayList.get(i).getRun();
-                int iDone = arrayList.get(i).getDone();
-                if (iDone != 1) {
-                    Bundle bPassData = new Bundle();
-                    TimePassData tPassData = new TimePassData(iId, sNameTag, sNameTask, sStart, sEnd, iEsMinute, iEsHour, iRun, iDone);
-                    bPassData.putSerializable("time", tPassData);
-                    RunTaskFragment runTaskFragment = new RunTaskFragment();
-                    runTaskFragment.setArguments(bPassData);
-                    // mListener.onFragmentInteraction(sNameTask, sNameTag, sStart, sEnd);
-                    FragmentManager fm = getFragmentManager();
-                    fm.beginTransaction().replace(R.id.content_frame, runTaskFragment).commit();
-                } else {
-                    Toast.makeText(getActivity(), R.string.runnable, Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
+            });
 
+            btnCalendar = (ImageButton) getActivity().findViewById(R.id.imageButtonTime_Calendar);
+            btnCalendar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                            txtTime.setText(dayOfMonth + "/"
+                                    + (monthOfYear + 1) + "/" + year);
+                            sDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+                            // LoadList(accountID, sDate);
+                            LoadList();
+                            mYear = year;
+                            mMonth = monthOfYear;
+                            mDay = dayOfMonth;
+                        }
+                    }, mYear, mMonth, mDay);
+                    datePickerDialog.show();
+
+                }
+            });
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    String sNameTask = arrayList.get(i).getTaskName();
+                    String sNameTag = arrayList.get(i).getTagName();
+                    String sStart = arrayList.get(i).getStart();
+                    String sEnd = arrayList.get(i).getEnd();
+                    int iId = arrayList.get(i).getId();
+                    int iEsMinute = arrayList.get(i).getEsMin();
+                    int iEsHour = arrayList.get(i).getEsHour();
+                    int iRun = arrayList.get(i).getRun();
+                    int iDone = arrayList.get(i).getDone();
+                    if (iDone != 1) {
+                        Bundle bPassData = new Bundle();
+                        TimePassData tPassData = new TimePassData(iId, sNameTag, sNameTask, sStart, sEnd, iEsMinute, iEsHour, iRun, iDone);
+                        bPassData.putSerializable("time", tPassData);
+                        RunTaskFragment runTaskFragment = new RunTaskFragment();
+                        runTaskFragment.setArguments(bPassData);
+                        // mListener.onFragmentInteraction(sNameTask, sNameTag, sStart, sEnd);
+                        FragmentManager fm = getFragmentManager();
+                        fm.beginTransaction().replace(R.id.content_frame, runTaskFragment).commit();
+                    } else {
+                        Toast.makeText(getActivity(), R.string.runnable, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+        }
     }
-
     public void LoadList() {
         arrayList = time_control.LoadTime(accountID, sDate);
         adapter = new TimeAdapter(getActivity(), R.layout.layout_time, arrayList);

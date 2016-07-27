@@ -3,6 +3,8 @@ package Fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -65,21 +67,36 @@ public class TaskFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         btnadd = (ImageButton) getActivity().findViewById(R.id.imageButtonTag);
         listView = (ListView) getActivity().findViewById(R.id.listview_Task);
-        task_control = new Task_Control(LoginActivity.db.getConnection());
-        tag_control = new Tag_Control(LoginActivity.db.getConnection());
-        accountID = LoginActivity.Account_Id;
-        LoadList();
-        registerForContextMenu(listView);
-        btnadd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.content_frame, new CreateTaskFragment()).commit();
+        ConnectivityManager connManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo m3g = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (mWifi.isConnected() == false & m3g.isConnected() == false) {
+            new android.app.AlertDialog.Builder(getActivity())
+                    .setTitle("Error")
+                    .setMessage("Please make sure that your device is already connected to the Internet!")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            getActivity().finishAffinity();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        } else {
+            task_control = new Task_Control(LoginActivity.db.getConnection());
+            tag_control = new Tag_Control(LoginActivity.db.getConnection());
+            accountID = LoginActivity.Account_Id;
+            LoadList();
+            registerForContextMenu(listView);
+            btnadd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentManager fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.content_frame, new CreateTaskFragment()).commit();
 
-            }
-        });
+                }
+            });
+        }
     }
-
     //LOAD LIST
     public void LoadList() {
         arrayList = task_control.LoadList(accountID);

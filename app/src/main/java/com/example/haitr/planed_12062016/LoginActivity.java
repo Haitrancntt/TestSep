@@ -25,12 +25,12 @@ public class LoginActivity extends AppCompatActivity {
 
     public static int Account_Id;
     public static DatabaseConnection db;
-    EditText txtUS, txtPass;
+    public static EditText txtUS, txtPass;
     TextView lblus, lblpass;
     private Button btnlogin;
     private RelativeLayout relativeLayout;
     private int iPermission;
-    private CheckBox checkBox;
+    public static CheckBox checkBox;
     private Account account;
     private Account_Control account_control;
     private Encryption encryption;
@@ -39,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences loginRemember;
     private SharedPreferences.Editor loginRememberEdit;
     private boolean isLoginSave;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

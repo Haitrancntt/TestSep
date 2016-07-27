@@ -219,6 +219,7 @@ public class Account_Control {
         }
     }
 
+    //GET NAME
     public String GetName(int iAccountId) {
         String output = null;
         try {

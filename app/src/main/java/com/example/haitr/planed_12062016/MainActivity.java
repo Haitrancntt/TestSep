@@ -1,5 +1,7 @@
 package com.example.haitr.planed_12062016;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import Controller.Account_Control;
 import Fragment.AccountFragment;
 import Fragment.MainFragment;
 import Fragment.TagFragment;
@@ -18,11 +21,15 @@ import Fragment.TaskFragment;
 import Fragment.TimeFragment;
 
 public class MainActivity extends AppCompatActivity {
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor logout;
+    private Account_Control account_control;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        account_control = new Account_Control(LoginActivity.db.getConnection());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -54,6 +61,22 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Setting", Toast.LENGTH_SHORT).show();
 
                 } else if (id == R.id.nav_logout) {
+                   /* sharedPreferences = getSharedPreferences("Current User", MODE_PRIVATE);
+                    logout = sharedPreferences.edit();
+                    logout.remove("Username");
+                    logout.remove("Password");
+                    logout.commit();*/
+                  /*  if (LoginActivity.checkBox.isChecked()) {
+                        account_control.RemoveRemember(LoginActivity.Account_Id);
+
+                        LoginActivity.txtUS.setText("");
+                        LoginActivity.txtPass.setText("");
+                    } else {
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }*/
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
                     Toast.makeText(MainActivity.this, "Log out", Toast.LENGTH_SHORT).show();
                 } else if (id == R.id.nav_home) {
                     fm.beginTransaction().replace(R.id.content_frame, new MainFragment()).commit();

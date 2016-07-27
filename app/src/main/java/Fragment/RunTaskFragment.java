@@ -2,6 +2,7 @@ package Fragment;
 
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +16,8 @@ import android.widget.Toast;
 
 import com.example.haitr.planed_12062016.LoginActivity;
 import com.example.haitr.planed_12062016.R;
+
+import java.util.concurrent.TimeUnit;
 
 import Class.TimePassData;
 import Controller.Time_Control;
@@ -31,6 +34,7 @@ public class RunTaskFragment extends Fragment {
     private Time_Control time_control;
     private String sStart, sEnd;
     private boolean bCheck, cCheck;
+    private CountDownTimer countDownTimer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,6 +69,9 @@ public class RunTaskFragment extends Fragment {
         txtRemaining.setText(timePassData.getiEsHour() + " hrs" + timePassData.getiEsMin() + " min");
         txtStart.setText(timePassData.getStart());
 
+        //Count down timer
+        countDownTimer = new CountDownTimer(timePassData.getiEsHour() * 3600000 + timePassData.getiEsMin() * 60000, 1000);
+
         //Set id for status
         iRun = timePassData.getiRun();
         iDone = timePassData.getiDone();
@@ -84,14 +91,17 @@ public class RunTaskFragment extends Fragment {
                     if (bCheck) {
                         timePassData = time_control.LoadList(timePassData.getId());
                         txtStart.setText(timePassData.getStart());
+                        countDownTimer.start();
                         btnRun.setText("End");
+                    } else {
+                        Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
                     }
                 } else if (iRun == 1) {
-                    // txtStart.setText(timePassData.getStart());
                     cCheck = time_control.AddTimeEnd(iIdCurrent);
                     if (cCheck) {
                         timePassData = time_control.LoadList(timePassData.getId());
                         txtEnd.setText(timePassData.getEnd());
+                        countDownTimer.cancel();
                         Toast.makeText(getActivity(), "Finish", Toast.LENGTH_SHORT).show();
                         FragmentManager fm = getFragmentManager();
                         fm.beginTransaction().replace(R.id.content_frame, new TimeFragment()).commit();
@@ -120,5 +130,27 @@ public class RunTaskFragment extends Fragment {
                 return false;
             }
         });
+    }
+
+    //TIMER
+    private class CountDownTimer extends android.os.CountDownTimer {
+        public CountDownTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long l) {
+            long millis = l;
+            String sHMS = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+                    TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                    TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+            txtRemaining.setText(sHMS);
+
+        }
+
+        @Override
+        public void onFinish() {
+
+        }
     }
 }

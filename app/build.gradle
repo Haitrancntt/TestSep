@@ -13,7 +13,7 @@ android {
     buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "com.example.haitr.planed_12062016"
-        minSdkVersion 11
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"

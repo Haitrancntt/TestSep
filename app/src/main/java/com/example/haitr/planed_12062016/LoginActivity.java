@@ -2,10 +2,9 @@ package com.example.haitr.planed_12062016;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -37,19 +36,17 @@ public class LoginActivity extends AppCompatActivity {
     private Encryption encryption;
     private String sPassEncrypt, sPassDecrypt;
     private ProgressDialog progressDialog;
+    private SharedPreferences loginRemember;
+    private SharedPreferences.Editor loginRememberEdit;
+    private boolean isLoginSave;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
-        db = new DatabaseConnection();
-        try {
-            db.Connect();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         encryption = new Encryption();
+        db = SplashActivity.db;
         account_control = new Account_Control(db.getConnection());
         checkBox = (CheckBox) findViewById(R.id.checkBox);
         lblus = (TextView) findViewById(R.id.lblErrorUS);
@@ -59,17 +56,22 @@ public class LoginActivity extends AppCompatActivity {
         txtUS = (EditText) findViewById(R.id.txtUsername);
 
         //SET REMEMBER ACCOUNT
-        account = account_control.GetRememberedAccount();
-        try {
-            sPassDecrypt = new String(encryption.decrypt(account.getPassword()));
-            txtUS.setText(account.getEmail());
-            txtPass.setText(sPassDecrypt);
-            if (txtUS.getText().length() != 0)
-                checkBox.setChecked(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
+        loginRemember = getSharedPreferences("Login", MODE_PRIVATE);
+        loginRememberEdit = loginRemember.edit();
+        isLoginSave = loginRemember.getBoolean("save", false);
+        if (isLoginSave) {
+            txtUS.setText(loginRemember.getString("username", ""));
+            txtPass.setText(loginRemember.getString("pass", ""));
+            checkBox.setChecked(true);
+            try {
+                Account_Id = account_control.GetAccountID(txtUS.getText().toString());
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         // BUTTON LISTENER
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +87,6 @@ public class LoginActivity extends AppCompatActivity {
                     if (b2) {
                         boolean b1 = account_control.CheckUsername(username);
                         if (b1) {
-
                             boolean b = account_control.CheckLogin(username, sPassEncrypt);
                             if (b) {
                                 Account_Id = account_control.GetAccountID(username);
@@ -95,9 +96,13 @@ public class LoginActivity extends AppCompatActivity {
                                 progressDialog.show();
                                 if (checkBox.isChecked()) {
                                     // SET REMEMBER ACCOUNT
-                                    account_control.SetRememberAccount(Account_Id);
+                                    loginRememberEdit.putBoolean("save", true);
+                                    loginRememberEdit.putString("username", username);
+                                    loginRememberEdit.putString("pass", password);
+                                    loginRememberEdit.commit();
                                 } else {
-                                    account_control.RemoveRemember(Account_Id);
+                                    loginRememberEdit.clear();
+                                    loginRememberEdit.commit();
                                 }
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);

@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import Class.TimePassData;
 import Class.Time;
+import Class.TimePassData;
 
 /**
  * Created by Thanh Huy on 7/23/2016.
@@ -121,5 +121,22 @@ public class Time_Control {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public boolean InsertNewTime(int taskId, int accountId, String date, int esTime) {
+        boolean b = false;
+        try {
+            PreparedStatement query = connection.prepareStatement("exec SP_EXCUTEDTASK_INSERT ?, ?, ?, ?");
+            query.setInt(1, taskId);
+            query.setInt(2, accountId);
+            query.setString(3, date);
+            query.setInt(4, esTime);
+            int i = query.executeUpdate();
+            if (i == 1)
+                b = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return b;
     }
 }

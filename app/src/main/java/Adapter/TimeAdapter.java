@@ -59,7 +59,7 @@ public class TimeAdapter extends BaseAdapter {
         TextView txtRun = (TextView) convertView.findViewById(R.id.run);
         TextView txtDone = (TextView) convertView.findViewById(R.id.done);
         // dau -
-        TextView txt = (TextView) convertView.findViewById(R.id.textView12);
+        // TextView txt = (TextView) convertView.findViewById(R.id.textView12);
         //
         txtTag.setText(arrayList.get(position).getTagName());
         txtTask.setText(arrayList.get(position).getTaskName());
@@ -81,14 +81,14 @@ public class TimeAdapter extends BaseAdapter {
         txtRun.setVisibility(View.INVISIBLE);
         if (txtRun.getText().toString().equals("1")) {
             txtTag.setTextColor(Color.rgb(198,34,34));
-            txt.setTextColor(Color.rgb(198,34,34));
+            // txt.setTextColor(Color.rgb(198,34,34));
             txtTask.setTextColor(Color.rgb(198,34,34));
         }
         txtDone.setText(String.valueOf(arrayList.get(position).getDone()));
         txtDone.setVisibility(View.INVISIBLE);
         if (txtDone.getText().toString().equals("1")) {
             txtTag.setTextColor(Color.rgb(16,254,241));
-            txt.setTextColor(Color.rgb(16,254,241));
+            // txt.setTextColor(Color.rgb(16,254,241));
             txtTask.setTextColor(Color.rgb(16,254,241));
         }
         return convertView;

@@ -1,7 +1,6 @@
 package Fragment;
 
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,8 +25,8 @@ import java.util.Calendar;
 
 import Adapter.TimeAdapter;
 import Class.Time;
-import Controller.Time_Control;
 import Class.TimePassData;
+import Controller.Time_Control;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +42,8 @@ public class TimeFragment extends Fragment {
     private ArrayList<Time> arrayList;
     private TimeAdapter adapter;
     private ListView listView;
+    private Calendar calendar;
+    private int mMonth, mYear, mDay;
     // private OnFragmentInteractionListener mListener;
 
     @Override
@@ -62,6 +63,13 @@ public class TimeFragment extends Fragment {
         listView = (ListView) getActivity().findViewById(R.id.listView);
         time_control = new Time_Control(LoginActivity.db.getConnection());
         accountID = LoginActivity.Account_Id;
+        calendar = Calendar.getInstance();
+        mYear = calendar.get(Calendar.YEAR); // current year
+        mMonth = calendar.get(Calendar.MONTH); // current month
+        mDay = calendar.get(Calendar.DAY_OF_MONTH); // current day
+        txtTime.setText(mDay + "/" + (mMonth + 1) + "/" + mYear);
+        sDate = mYear + "-" + (mMonth + 1) + "-" + mDay;
+        LoadList();
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,10 +83,7 @@ public class TimeFragment extends Fragment {
         btnCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Calendar calendar = Calendar.getInstance();
-                int mYear = calendar.get(Calendar.YEAR); // current year
-                int mMonth = calendar.get(Calendar.MONTH); // current month
-                int mDay = calendar.get(Calendar.DAY_OF_MONTH); // current day
+
                 datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -86,9 +91,10 @@ public class TimeFragment extends Fragment {
                                 + (monthOfYear + 1) + "/" + year);
                         sDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
                         // LoadList(accountID, sDate);
-                        arrayList = time_control.LoadTime(accountID, sDate);
-                        adapter = new TimeAdapter(getActivity(), R.layout.layout_time, arrayList);
-                        listView.setAdapter(adapter);
+                        LoadList();
+                        mYear = year;
+                        mMonth = monthOfYear;
+                        mDay = dayOfMonth;
                     }
                 }, mYear, mMonth, mDay);
                 datePickerDialog.show();
@@ -124,6 +130,11 @@ public class TimeFragment extends Fragment {
 
     }
 
+    public void LoadList() {
+        arrayList = time_control.LoadTime(accountID, sDate);
+        adapter = new TimeAdapter(getActivity(), R.layout.layout_time, arrayList);
+        listView.setAdapter(adapter);
+    }
     /*@Override
     public void onDetach() {
         super.onDetach();

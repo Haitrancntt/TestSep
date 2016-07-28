@@ -5,8 +5,10 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -50,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         ConnectivityManager connManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         NetworkInfo m3g = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
@@ -76,27 +79,14 @@ public class LoginActivity extends AppCompatActivity {
             txtUS = (EditText) findViewById(R.id.txtUsername);
 
             //SET REMEMBER ACCOUNT
-
-            loginRemember = getSharedPreferences("Login", MODE_PRIVATE);
-            loginRememberEdit = loginRemember.edit();
-            isLoginSave = loginRemember.getBoolean("save", false);
-            isLogout = loginRemember.getBoolean("logout", false);
-            if (isLoginSave == true & isLogout == false) {
-
-                try {
-                    String s = loginRemember.getString("username", "");
-                    Account_Id = account_control.GetAccountID(s);
-                    iPermission = account_control.GetPermission(Account_Id);
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                } catch (Exception e) {
-                    e.printStackTrace();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    new GetRememberAccount().execute();
                 }
-            } else {
-                txtUS.setText(loginRemember.getString("username", ""));
-                txtPass.setText(loginRemember.getString("pass", ""));
-                checkBox.setChecked(true);
-            }
+            });
+
+
             // BUTTON LISTENER
             btnlogin.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -167,5 +157,38 @@ public class LoginActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    private class GetRememberAccount extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            loginRemember = getSharedPreferences("Login", MODE_PRIVATE);
+            loginRememberEdit = loginRemember.edit();
+            isLoginSave = loginRemember.getBoolean("save", false);
+            isLogout = loginRemember.getBoolean("logout", false);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (isLoginSave == true & isLogout == false) {
+
+                try {
+                    String s = loginRemember.getString("username", "");
+                    Account_Id = account_control.GetAccountID(s);
+                    iPermission = account_control.GetPermission(Account_Id);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (isLoginSave == true & isLogout == true) {
+                txtUS.setText(loginRemember.getString("username", ""));
+                txtPass.setText(loginRemember.getString("pass", ""));
+                checkBox.setChecked(true);
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ package Fragment;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -37,18 +38,9 @@ public class CreateNewAccountFragment extends Fragment {
     private FragmentManager fragmentManager = getFragmentManager();
     private Account_Control account_control;
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_create_new_account, container, false);
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         ConnectivityManager connManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         NetworkInfo m3g = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
@@ -63,66 +55,80 @@ public class CreateNewAccountFragment extends Fragment {
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
-        } else {
-            encryption = new Encryption();
-            txtEmail = (EditText) getActivity().findViewById(R.id.editText_Email);
-            txtName = (EditText) getActivity().findViewById(R.id.editText_Name);
-            txtPassword = (EditText) getActivity().findViewById(R.id.editText_Password);
-            txtErrorName = (TextView) getActivity().findViewById(R.id.textview_errorname);
-            txtErrorEmail = (TextView) getActivity().findViewById(R.id.textview_erroremail);
-            txtErrorPass = (TextView) getActivity().findViewById(R.id.textview_errorpass);
-            btnCreate = (ImageButton) getActivity().findViewById(R.id.imagebutton_Create);
-            account_control = new Account_Control(LoginActivity.db.getConnection());
-            btnCreate.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    txtErrorEmail.setText("");
-                    txtErrorPass.setText("");
-                    txtErrorName.setText("");
-
-                    sName = txtName.getText().toString().trim();
-
-                    sEmail = txtEmail.getText().toString().trim();
-
-                    sPassword = txtPassword.getText().toString().trim();
-                    if (sName.equals("") || sEmail.equals("") || sPassword.equals("")) {
-                        if (sName.equals("")) {
-                            txtErrorName.setText(R.string.null_space);
-
-                        }
-                        if (sEmail.equals("")) {
-                            txtErrorEmail.setText(R.string.null_space);
-                        }
-                        if (sPassword.equals("")) {
-                            txtErrorPass.setText(R.string.null_space);
-                        }
-                    } else {
-                        try {
-                            if (account_control.CheckEmail(sEmail)) {
-                                if (account_control.CheckExisted(sEmail) == true) {
-                                    txtErrorEmail.setText(R.string.existed_email);
-                                } else {
-                                    sPassEncrypt = Encryption.bytesToHex(encryption.encrypt(sPassword));
-                                    account_control.AddNewAccount(sEmail, sName, sPassEncrypt);
-                                    Toast.makeText(getContext(), "Success", Toast.LENGTH_LONG).show();
-                                    FragmentManager fragmentManager = getFragmentManager();
-                                    fragmentManager.beginTransaction().replace(R.id.content_frame, new AccountFragment()).commit();
-                                    //Toast.makeText(getContext(), encryption.Encryption(sPassword), Toast.LENGTH_LONG).show();
-                                }
-                            } else {
-                                txtErrorEmail.setText(R.string.error_email_login);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    // Toast.makeText(getContext(), "Fill all field please", Toast.LENGTH_SHORT).show();
-                }
-
-            });
         }
     }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_create_new_account, container, false);
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        encryption = new Encryption();
+        txtEmail = (EditText) getActivity().findViewById(R.id.editText_Email);
+        txtName = (EditText) getActivity().findViewById(R.id.editText_Name);
+        txtPassword = (EditText) getActivity().findViewById(R.id.editText_Password);
+        txtErrorName = (TextView) getActivity().findViewById(R.id.textview_errorname);
+        txtErrorEmail = (TextView) getActivity().findViewById(R.id.textview_erroremail);
+        txtErrorPass = (TextView) getActivity().findViewById(R.id.textview_errorpass);
+        btnCreate = (ImageButton) getActivity().findViewById(R.id.imagebutton_Create);
+        account_control = new Account_Control(LoginActivity.db.getConnection());
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        btnCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                txtErrorEmail.setText("");
+                txtErrorPass.setText("");
+                txtErrorName.setText("");
+                sName = txtName.getText().toString().trim();
+                sEmail = txtEmail.getText().toString().trim();
+                sPassword = txtPassword.getText().toString().trim();
+                if (sName.equals("") || sEmail.equals("") || sPassword.equals("")) {
+                    if (sName.equals("")) {
+                        txtErrorName.setText(R.string.null_space);
+                    }
+                    if (sEmail.equals("")) {
+                        txtErrorEmail.setText(R.string.null_space);
+                    }
+                    if (sPassword.equals("")) {
+                        txtErrorPass.setText(R.string.null_space);
+                    }
+                } else {
+                    try {
+                        if (account_control.CheckEmail(sEmail)) {
+                            if (account_control.CheckExisted(sEmail) == true) {
+                                txtErrorEmail.setText(R.string.existed_email);
+                            } else {
+                                sPassEncrypt = Encryption.bytesToHex(encryption.encrypt(sPassword));
+                                account_control.AddNewAccount(sEmail, sName, sPassEncrypt);
+                                Toast.makeText(getContext(), "Success", Toast.LENGTH_LONG).show();
+                                FragmentManager fragmentManager = getFragmentManager();
+                                fragmentManager.beginTransaction().replace(R.id.content_frame, new AccountFragment()).commit();
+                                //Toast.makeText(getContext(), encryption.Encryption(sPassword), Toast.LENGTH_LONG).show();
+                            }
+                        } else {
+                            txtErrorEmail.setText(R.string.error_email_login);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                // Toast.makeText(getContext(), "Fill all field please", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+    }
+
     //ON BACK PRESSED
     @Override
     public void onResume() {

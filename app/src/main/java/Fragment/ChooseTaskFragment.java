@@ -4,8 +4,10 @@ package Fragment;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -34,17 +36,9 @@ public class ChooseTaskFragment extends Fragment {
     private TaskAdapter adapter;
     private ListView listView;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_choose_task_for_time, container, false);
-
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         ConnectivityManager connManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         NetworkInfo m3g = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
@@ -59,24 +53,60 @@ public class ChooseTaskFragment extends Fragment {
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
-        } else {
-            task_control = new Task_Control(LoginActivity.db.getConnection());
-            accountID = LoginActivity.Account_Id;
-            listView = (ListView) getActivity().findViewById(R.id.listTaskChoosing);
+        }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_choose_task_for_time, container, false);
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        task_control = new Task_Control(LoginActivity.db.getConnection());
+        accountID = LoginActivity.Account_Id;
+        listView = (ListView) getActivity().findViewById(R.id.listTaskChoosing);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new LoadTaskInBackGround().execute();
+            }
+        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Task task = arrayList.get(position);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("task", task);
+                CreateTimeFragment fragment = new CreateTimeFragment();
+                fragment.setArguments(bundle);
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
+            }
+        });
+    }
+
+    private class LoadTaskInBackGround extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
             arrayList = task_control.LoadList(accountID);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
             adapter = new TaskAdapter(getActivity(), R.layout.layout_task, arrayList);
             listView.setAdapter(adapter);
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Task task = arrayList.get(position);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("task", task);
-                    CreateTimeFragment fragment = new CreateTimeFragment();
-                    fragment.setArguments(bundle);
-                    getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
-                }
-            });
         }
     }
 }

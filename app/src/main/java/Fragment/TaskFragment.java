@@ -3,8 +3,10 @@ package Fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -55,18 +57,8 @@ public class TaskFragment extends Fragment {
     private EditText editText;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_task, container, false);
-
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        btnadd = (ImageButton) getActivity().findViewById(R.id.imageButtonTag);
-        listView = (ListView) getActivity().findViewById(R.id.listview_Task);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         ConnectivityManager connManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         NetworkInfo m3g = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
@@ -81,27 +73,49 @@ public class TaskFragment extends Fragment {
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
-        } else {
-            task_control = new Task_Control(LoginActivity.db.getConnection());
-            tag_control = new Tag_Control(LoginActivity.db.getConnection());
-            accountID = LoginActivity.Account_Id;
-            LoadList();
-            registerForContextMenu(listView);
-            btnadd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FragmentManager fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.content_frame, new CreateTaskFragment()).commit();
-
-                }
-            });
         }
     }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_task, container, false);
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        btnadd = (ImageButton) getActivity().findViewById(R.id.imageButtonTag);
+        listView = (ListView) getActivity().findViewById(R.id.listview_Task);
+        task_control = new Task_Control(LoginActivity.db.getConnection());
+        tag_control = new Tag_Control(LoginActivity.db.getConnection());
+        accountID = LoginActivity.Account_Id;
+        registerForContextMenu(listView);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        LoadList();
+        btnadd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, new CreateTaskFragment()).commit();
+            }
+        });
+    }
+
     //LOAD LIST
     public void LoadList() {
-        arrayList = task_control.LoadList(accountID);
-        adapter = new TaskAdapter(getActivity(), R.layout.layout_task, arrayList);
-        listView.setAdapter(adapter);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new LoadTaskInBackGround().execute();
+            }
+        });
     }
 
     // CREATE CONTEXT MENU FOR DELETE / EDIT
@@ -119,8 +133,6 @@ public class TaskFragment extends Fragment {
             }
         }
     }
-
-    // SHOW POP UP FOR EDIT TASK
 
     /**
      * @param item
@@ -170,6 +182,8 @@ public class TaskFragment extends Fragment {
         alertDialog.show();
     }
 
+    // SHOW POP UP FOR EDIT TASK
+
     // SHOW POP UP FOR DELETE
     public void AlertDelete(String title, String sNameTask, int ID) throws Exception {
         final AlertDialog.Builder alertdelete = new AlertDialog.Builder(getContext());
@@ -204,7 +218,7 @@ public class TaskFragment extends Fragment {
         try {
             //GET TASK ID
             // tagId = tag_control.GetTagId(sSelectedItem, accountID);
-           // tagId = tag_control.GetTagId(spinner.getSelectedItem().toString(), accountID);
+            // tagId = tag_control.GetTagId(spinner.getSelectedItem().toString(), accountID);
 
             taskId = task_control.GetTaskIDByName(sEdit, accountID);
         } catch (Exception e) {
@@ -246,5 +260,21 @@ public class TaskFragment extends Fragment {
                 return false;
             }
         });
+    }
+
+    private class LoadTaskInBackGround extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            arrayList = task_control.LoadList(accountID);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            adapter = new TaskAdapter(getActivity(), R.layout.layout_task, arrayList);
+            listView.setAdapter(adapter);
+        }
     }
 }

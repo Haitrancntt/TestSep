@@ -4,8 +4,10 @@ package Fragment;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -45,17 +47,9 @@ public class CreateTaskFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_task, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         ConnectivityManager connManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         NetworkInfo m3g = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
@@ -70,47 +64,68 @@ public class CreateTaskFragment extends Fragment {
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
-        } else {
-            btnExit = (ImageButton) getActivity().findViewById(R.id.imageButton_CreateNewTask);
-            spinner = (Spinner) getActivity().findViewById(R.id.spinner);
-            editText = (EditText) getActivity().findViewById(R.id.editText3);
-            accountID = LoginActivity.Account_Id;
-            tag_control = new Tag_Control(LoginActivity.db.getConnection());
-            task_control = new Task_Control(LoginActivity.db.getConnection());
-            arrayList = tag_control.LoadList(accountID);
-            adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, arrayList);
-            spinner.setAdapter(adapter);
-            btnExit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String taskName = editText.getText().toString();
-                    String tagName = spinner.getSelectedItem().toString();
-                    int tagId = 0;
-                    try {
-                        tagId = tag_control.GetTagIDByName(tagName, accountID);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    boolean b = task_control.CheckExistedTask(accountID, taskName);
-                    if (b) {
-                        Toast.makeText(getActivity(), R.string.existed_tag, Toast.LENGTH_SHORT).show();
-                    } else {
-                        if (taskName.equals("")) {
-                            Toast.makeText(getActivity(), R.string.null_space, Toast.LENGTH_SHORT).show();
-                        } else {
-                            boolean b1 = task_control.AddTask(taskName, tagId, accountID);
-                            if (b1) {
-                                FragmentManager fragmentManager = getFragmentManager();
-                                fragmentManager.beginTransaction().replace(R.id.content_frame, new TaskFragment()).commit();
-                                Toast.makeText(getActivity(), "Add Task Successfully", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }
-
-                }
-            });
         }
     }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_create_task, container, false);
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        btnExit = (ImageButton) getActivity().findViewById(R.id.imageButton_CreateNewTask);
+        spinner = (Spinner) getActivity().findViewById(R.id.spinner);
+        editText = (EditText) getActivity().findViewById(R.id.editText3);
+        accountID = LoginActivity.Account_Id;
+        tag_control = new Tag_Control(LoginActivity.db.getConnection());
+        task_control = new Task_Control(LoginActivity.db.getConnection());
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new LoadTagInBackGround().execute();
+            }
+        });
+        btnExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String taskName = editText.getText().toString();
+                String tagName = spinner.getSelectedItem().toString();
+                int tagId = 0;
+                try {
+                    tagId = tag_control.GetTagIDByName(tagName, accountID);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                boolean b = task_control.CheckExistedTask(accountID, taskName);
+                if (b) {
+                    Toast.makeText(getActivity(), R.string.existed_tag, Toast.LENGTH_SHORT).show();
+                } else {
+                    if (taskName.equals("")) {
+                        Toast.makeText(getActivity(), R.string.null_space, Toast.LENGTH_SHORT).show();
+                    } else {
+                        boolean b1 = task_control.AddTask(taskName, tagId, accountID);
+                        if (b1) {
+                            FragmentManager fragmentManager = getFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.content_frame, new TaskFragment()).commit();
+                            Toast.makeText(getActivity(), "Add Task Successfully", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     //ON BACK PRESSED
     @Override
     public void onResume() {
@@ -128,6 +143,22 @@ public class CreateTaskFragment extends Fragment {
                 return false;
             }
         });
+    }
+
+    private class LoadTagInBackGround extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            arrayList = tag_control.LoadList(accountID);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, arrayList);
+            spinner.setAdapter(adapter);
+        }
     }
 
 }

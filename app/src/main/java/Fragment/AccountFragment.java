@@ -4,6 +4,7 @@ package Fragment;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -35,18 +36,9 @@ public class AccountFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_account, container, false);
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         ConnectivityManager connManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         NetworkInfo m3g = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
@@ -61,45 +53,64 @@ public class AccountFragment extends Fragment {
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
-        } else {
-            account_control = new Account_Control(LoginActivity.db.getConnection());
-            iAccountId = LoginActivity.Account_Id;
-            iPermission = LoginActivity.iPermission;
-            imgbutton_CreateAccount = (ImageButton) getActivity().findViewById(R.id.imagebutton_createaccount);
-            imgbutton_ResetPass = (ImageButton) getActivity().findViewById(R.id.imagebutton_resetpass);
-            imgbutton_ChangePass = (ImageButton) getActivity().findViewById(R.id.imagebutton_changepass);
-            imgbutton_CreateAccount.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (iPermission == 1) {
-                        fragmentManager = getFragmentManager();
-                        fragmentManager.beginTransaction().replace(R.id.content_frame, new CreateNewAccountFragment()).commit();
-                    } else {
-                        Toast.makeText(getContext(), "You are not allowed to do this\nPlease contact your Administator", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-            imgbutton_ResetPass.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (iPermission == 1) {
-                        fragmentManager = getFragmentManager();
-                        fragmentManager.beginTransaction().replace(R.id.content_frame, new ResetPassFragment()).commit();
-                    } else {
-                        Toast.makeText(getContext(), "You are not allowed to do this\nPlease contact your Administator", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-            });
-            imgbutton_ChangePass.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.content_frame, new ChangePasswordFragment()).commit();
-                }
-            });
         }
     }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_account, container, false);
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        account_control = new Account_Control(LoginActivity.db.getConnection());
+        iAccountId = LoginActivity.Account_Id;
+        iPermission = LoginActivity.iPermission;
+        imgbutton_CreateAccount = (ImageButton) getActivity().findViewById(R.id.imagebutton_createaccount);
+        imgbutton_ResetPass = (ImageButton) getActivity().findViewById(R.id.imagebutton_resetpass);
+        imgbutton_ChangePass = (ImageButton) getActivity().findViewById(R.id.imagebutton_changepass);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        imgbutton_CreateAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (iPermission == 1) {
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.content_frame, new CreateNewAccountFragment()).commit();
+                } else {
+                    Toast.makeText(getContext(), "You are not allowed to do this\nPlease contact your Administator", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        imgbutton_ResetPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (iPermission == 1) {
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.content_frame, new ResetPassFragment()).commit();
+                } else {
+                    Toast.makeText(getContext(), "You are not allowed to do this\nPlease contact your Administator", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+        imgbutton_ChangePass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, new ChangePasswordFragment()).commit();
+            }
+        });
+    }
+
     //ON BACKED PRESS
     @Override
     public void onResume() {

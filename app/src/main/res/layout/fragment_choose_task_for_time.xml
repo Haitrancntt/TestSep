@@ -7,7 +7,6 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/searchView3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:text="Choose a Task"
@@ -31,5 +30,5 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/searchView3"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="40dp" />
 </RelativeLayout>

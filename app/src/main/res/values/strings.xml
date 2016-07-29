@@ -35,6 +35,7 @@
 
     //time
     <string name="runnable">Please choose task that have not run yet</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="prompt">Choose one Type</string>
     <string-array name="item_spinner">

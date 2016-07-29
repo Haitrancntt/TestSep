@@ -11,28 +11,28 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="200dp"
         android:descendantFocusability="blocksDescendants" />
 
     <NumberPicker
         android:id="@+id/numberPicker2"
         android:layout_width="150dp"
         android:layout_height="100dp"
-        android:layout_alignParentEnd="true"
+        android:descendantFocusability="blocksDescendants"
+        android:layout_alignTop="@+id/numberPicker"
         android:layout_alignParentRight="true"
-        android:layout_alignRight="@+id/numberPicker"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="170dp"
-        android:descendantFocusability="blocksDescendants" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="20dp" />
 
     <TextView
         android:id="@+id/textView33"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="160dp"
-        android:layout_marginTop="193dp"
         android:text=":"
-        android:textSize="40dp" />
+        android:textSize="40dp"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/txtDateTime"
+        android:layout_alignEnd="@+id/txtDateTime" />
 
     <TextView
         android:id="@+id/textView27"
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="60dp"
         android:text="Task Name:"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -90,11 +90,11 @@
         android:id="@+id/imgButtonTime"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:layout_alignLeft="@+id/numberPicker"
-        android:layout_alignStart="@+id/numberPicker"
+        android:layout_marginTop="49dp"
+        android:background="@drawable/ic_calendar"
         android:layout_below="@+id/textView35"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/ic_calendar" />
+        android:layout_alignLeft="@+id/numberPicker"
+        android:layout_alignStart="@+id/numberPicker" />
 
     <TextView
         android:id="@+id/textView35"
@@ -121,18 +121,49 @@
         android:id="@+id/imageButtonSave"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:layout_below="@+id/imgButtonTime"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/ic_save" />
+        android:background="@drawable/ic_save"
+        android:layout_alignTop="@+id/imgButtonTime"
+        android:layout_alignRight="@+id/numberPicker2"
+        android:layout_alignEnd="@+id/numberPicker2" />
 
     <TextView
         android:id="@+id/textView31"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageButtonSave"
-        android:layout_centerHorizontal="true"
         android:text="Save"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_below="@+id/imageButtonSave"
+        android:layout_alignRight="@+id/imageButtonSave"
+        android:layout_alignEnd="@+id/imageButtonSave"
+        android:layout_marginRight="10dp"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:textColor="@color/colorText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Choose date"
+        android:id="@+id/textView46"
+        android:layout_alignTop="@+id/textView31"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/colorText"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:layout_marginLeft="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Choose Time"
+        android:id="@+id/textView47"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorText"
+        android:textSize="40dp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

@@ -114,8 +114,8 @@ public class Time_Control {
                 int esMin = rs.getInt("EsMinute");
                 int acHrs = rs.getInt("AcHour");
                 int acMin = rs.getInt("AcMinute");
-             list = new TimePassData(idExce, name, tag_name, start, end, esHrs, esMin, acHrs, acMin);
-              //  list.add(timePassData);
+                list = new TimePassData(idExce, name, tag_name, start, end, esHrs, esMin, acHrs, acMin);
+                //  list.add(timePassData);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -123,6 +123,7 @@ public class Time_Control {
         return list;
     }
 
+    //INSERT NEW TIME TO RUN
     public boolean InsertNewTime(int taskId, int accountId, String date, int esTime) {
         boolean b = false;
         try {
@@ -138,5 +139,58 @@ public class Time_Control {
             e.printStackTrace();
         }
         return b;
+    }
+
+
+    //SELECT STATUS OF TASK
+    public int SelectStatus(int idTask) throws Exception {
+        try {
+            PreparedStatement select = connection.prepareStatement("select Status from Excuted_Task where Id =" + idTask);
+            ResultSet result = select.executeQuery();
+            int i = 0;
+            while (result.next()) {
+                i = result.getInt("Status");
+            }
+            return i;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception(e.toString());
+        }
+    }
+
+    // DELETE EXCUTED TASK WITH STATUS !=1
+    public boolean DeleteExecutedTask(int id) {
+        try {
+            PreparedStatement delete = connection.prepareStatement("exec SP_EXCUTEDTIME_DEL ?");
+            delete.setInt(1, id);
+            int i = delete.executeUpdate();
+            if (i == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    // EDIT EXECUTED TASK WITH STATUS !=1
+    public boolean EditExecutedTask(int id, int time) {
+        try {
+            PreparedStatement Pedit = connection.prepareStatement("exec SP_EXCUTEDTIME_UPDATE ?,?");
+            Pedit.setInt(1, id);
+            Pedit.setInt(2, time);
+            int i = Pedit.executeUpdate();
+            if (i == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

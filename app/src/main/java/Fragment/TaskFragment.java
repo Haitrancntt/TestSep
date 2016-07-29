@@ -50,7 +50,7 @@ public class TaskFragment extends Fragment {
     private ListView listView;
     private Task_Control task_control;
     private Tag_Control tag_control;
-    private int accountID, tagId, taskId, tagIdCurrent;
+    private int accountID, tagId, taskId, tagIdCurrent, iStatus;
     private Adapter sAdapter;
     private String sSelectedItem, sNametag;
     private Spinner spinner;
@@ -189,12 +189,17 @@ public class TaskFragment extends Fragment {
         final AlertDialog.Builder alertdelete = new AlertDialog.Builder(getContext());
         alertdelete.setTitle(title);
         taskId = task_control.GetTaskIDByName(sNameTask, accountID);
+        iStatus = task_control.SelectStatus(taskId);
         alertdelete.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                task_control.DeleteTag(taskId);
-                LoadList();
-                Toast.makeText(getContext(), R.string.delete_tag_success, Toast.LENGTH_SHORT).show();
+                if (iStatus == 0) {
+                    task_control.DeleteTag(taskId);
+                    LoadList();
+                    Toast.makeText(getContext(), R.string.delete_tag_success, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Not Permission", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         alertdelete.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -217,9 +222,6 @@ public class TaskFragment extends Fragment {
 
         try {
             //GET TASK ID
-            // tagId = tag_control.GetTagId(sSelectedItem, accountID);
-            // tagId = tag_control.GetTagId(spinner.getSelectedItem().toString(), accountID);
-
             taskId = task_control.GetTaskIDByName(sEdit, accountID);
         } catch (Exception e) {
             e.printStackTrace();

@@ -128,4 +128,37 @@ public class Task_Control {
             return false;
         }
     }
+
+    //SELECT STATUS OF TASK
+    public int SelectStatus(int idTask) throws Exception {
+        try {
+            PreparedStatement select = connection.prepareStatement("select Status from Task where Id =" + idTask);
+            ResultSet result = select.executeQuery();
+            int i = 0;
+            while (result.next()) {
+                i = result.getInt("Status");
+            }
+            return i;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception(e.toString());
+        }
+    }
+
+    //SELECT NAME OF TASK
+    public int SelectNameTask(int idTask) throws Exception {
+        try {
+            PreparedStatement select = connection.prepareStatement("select Task_Id from Task where Id =" + idTask);
+            ResultSet result = select.executeQuery();
+            int i = 0;
+            while (result.next()) {
+                i = result.getInt("Task_Id");
+            }
+            return i;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception(e.toString());
+        }
+    }
+
 }

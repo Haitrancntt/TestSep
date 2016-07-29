@@ -174,7 +174,6 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             if (isLoginSave == true & isLogout == false) {
-
                 try {
                     String s = loginRemember.getString("username", "");
                     Account_Id = account_control.GetAccountID(s);
@@ -188,6 +187,8 @@ public class LoginActivity extends AppCompatActivity {
                 txtUS.setText(loginRemember.getString("username", ""));
                 txtPass.setText(loginRemember.getString("pass", ""));
                 checkBox.setChecked(true);
+            } else if (isLoginSave == false & isLogout == false) {
+
             }
         }
     }

@@ -2,6 +2,7 @@ package com.example.haitr.planed_12062016;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import Controller.Account_Control;
 import Fragment.AccountFragment;
 import Fragment.MainFragment;
+import Fragment.ReportFragment;
 import Fragment.TagFragment;
 import Fragment.TaskFragment;
 import Fragment.TimeFragment;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         account_control = new Account_Control(LoginActivity.db.getConnection());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -56,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     fm.beginTransaction().replace(R.id.content_frame, new TagFragment()).commit();
 
                 } else if (id == R.id.nav_report) {
-                    Toast.makeText(MainActivity.this, "Report", Toast.LENGTH_SHORT).show();
+                    fm.beginTransaction().replace(R.id.content_frame, new ReportFragment()).commit();
                 } else if (id == R.id.nav_setting) {
                     Toast.makeText(MainActivity.this, "Setting", Toast.LENGTH_SHORT).show();
 

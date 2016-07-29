@@ -110,10 +110,12 @@ public class CreateNewAccountFragment extends Fragment {
                                 txtErrorEmail.setText(R.string.existed_email);
                             } else {
                                 sPassEncrypt = Encryption.bytesToHex(encryption.encrypt(sPassword));
-                                account_control.AddNewAccount(sEmail, sName, sPassEncrypt);
-                                Toast.makeText(getContext(), "Success", Toast.LENGTH_LONG).show();
-                                FragmentManager fragmentManager = getFragmentManager();
-                                fragmentManager.beginTransaction().replace(R.id.content_frame, new AccountFragment()).commit();
+                                boolean b = account_control.AddNewAccount(sEmail, sName, sPassEncrypt);
+                                if (b) {
+                                    Toast.makeText(getContext(), "Success", Toast.LENGTH_LONG).show();
+                                    FragmentManager fragmentManager = getFragmentManager();
+                                    fragmentManager.beginTransaction().replace(R.id.content_frame, new AccountFragment()).commit();
+                                }
                                 //Toast.makeText(getContext(), encryption.Encryption(sPassword), Toast.LENGTH_LONG).show();
                             }
                         } else {

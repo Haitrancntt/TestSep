@@ -150,6 +150,12 @@ public class CreateTimeFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
     private class LoadTaskInBackGround extends AsyncTask<Void, Void, Void> {
 
         @Override

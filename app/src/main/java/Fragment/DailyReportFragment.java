@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.example.haitr.planed_12062016.LoginActivity;
 import com.example.haitr.planed_12062016.R;
@@ -36,18 +35,20 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 
+import Class.PieChartData;
 import Controller.Report_Control;
 import utilities.DemoBase;
-
 
 /**
  * Created by Thanh Huy on 7/29/2016.
  */
-public class ReportFragment extends DemoBase implements OnChartValueSelectedListener {
+public class DailyReportFragment extends DemoBase implements OnChartValueSelectedListener {
     protected BarChart barChart;
     protected PieChart fullPieChart;
     protected PieChart halfPieChart;
-    protected ArrayList<Integer> numberTaskArray;
+    protected ArrayList<Integer> halfpieArray;
+    protected ArrayList<PieChartData> fullpieArray;
+    protected int fullpieCount;
     protected Report_Control report_control;
     protected int accountID;
     protected String sTotal;
@@ -62,8 +63,8 @@ public class ReportFragment extends DemoBase implements OnChartValueSelectedList
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_report, container, false);
-        //  getActivity().setContentView(R.layout.fragment_report);
+        View view = inflater.inflate(R.layout.fragment_daily_report, container, false);
+
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -89,10 +90,15 @@ public class ReportFragment extends DemoBase implements OnChartValueSelectedList
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new LoadNumberOfTask().execute();
+                new LoadData_HalfPie().execute();
             }
         });
-        Styling_FullPie();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new LoadData_FullPie().execute();
+            }
+        });
     }
 
     @Override
@@ -126,7 +132,7 @@ public class ReportFragment extends DemoBase implements OnChartValueSelectedList
         ArrayList<PieEntry> values = new ArrayList<PieEntry>();
         String[] string = {"Done", "Not Done"};
         for (int i = 0; i < count; i++) {
-            values.add(new PieEntry((float) numberTaskArray.get(i + 1), string[i] + ": " + numberTaskArray.get(i + 1)));
+            values.add(new PieEntry((float) halfpieArray.get(i + 1), string[i] + ": " + halfpieArray.get(i + 1)));
         }
         PieDataSet dataSet = new PieDataSet(values, "");
         dataSet.setSliceSpace(3f);
@@ -197,7 +203,7 @@ public class ReportFragment extends DemoBase implements OnChartValueSelectedList
         // fullPieChart.setDrawUnitsInChart(true);
         // add a selection listener
         fullPieChart.setOnChartValueSelectedListener(this);
-        FullPie_Setdata(4, 100);
+        FullPie_Setdata(fullpieCount, 100);
         fullPieChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
         // fullPieChart.spin(2000, 0, 360);
         Legend l = fullPieChart.getLegend();
@@ -218,7 +224,7 @@ public class ReportFragment extends DemoBase implements OnChartValueSelectedList
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
         for (int i = 0; i < count; i++) {
-            entries.add(new PieEntry((float) ((Math.random() * mult) + mult / 5), mParties[i % mParties.length]));
+            entries.add(new PieEntry((float) fullpieArray.get(i).getTime(), fullpieArray.get(i).getName() + ": " + fullpieArray.get(i).getTime() + " minutes"));
         }
         PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setSliceSpace(3f);
@@ -261,11 +267,11 @@ public class ReportFragment extends DemoBase implements OnChartValueSelectedList
         return s;
     }
 
-    public class LoadNumberOfTask extends AsyncTask<Void, Void, Void> {
+    public class LoadData_HalfPie extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... params) {
-            numberTaskArray = report_control.GetNumberOfTask(accountID, "2016-07-29");
+            halfpieArray = report_control.GetNumberOfTask(accountID, "2016-08-03");
             return null;
 
         }
@@ -273,8 +279,24 @@ public class ReportFragment extends DemoBase implements OnChartValueSelectedList
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            sTotal = numberTaskArray.get(0).toString();
+            sTotal = halfpieArray.get(0).toString();
             Styling_HalfPie();
+        }
+    }
+
+    public class LoadData_FullPie extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            fullpieArray = report_control.GetPieChartData(accountID, "2016-08-03");
+            fullpieCount = report_control.GetPieSize(accountID, "2016-08-03");
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Styling_FullPie();
         }
     }
 }

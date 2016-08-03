@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import Class.PieChartData;
 /**
  * Created by Thanh Huy on 7/29/2016.
  */
@@ -46,5 +47,40 @@ public class Report_Control {
             e.printStackTrace();
         }
         return arrayList;
+    }
+
+    public ArrayList<PieChartData> GetPieChartData(int accId, String date) {
+        ArrayList<PieChartData> arrayList = new ArrayList<PieChartData>();
+        try {
+            PreparedStatement query = connection.prepareStatement("exec sp_report_tag_summary ?, ?");
+            query.setInt(1, accId);
+            query.setString(2, date);
+            ResultSet rs = query.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString("Name");
+                int time = rs.getInt("Time");
+                PieChartData data = new PieChartData(name, time);
+                arrayList.add(data);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return arrayList;
+    }
+
+    public int GetPieSize(int accId, String date) {
+        int i = -1;
+        try {
+            PreparedStatement query = connection.prepareStatement("exec sp_report_count_tag ?, ?");
+            query.setInt(1, accId);
+            query.setString(2, date);
+            ResultSet rs = query.executeQuery();
+            while (rs.next()) {
+                i = rs.getInt("Number");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return i;
     }
 }

@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.example.haitr.planed_12062016.LoginActivity;
@@ -108,8 +109,8 @@ public class ReportFragment extends DemoBase implements OnChartValueSelectedList
         Display display = getActivity().getWindowManager().getDefaultDisplay();
         int height = display.getHeight();  // deprecated
         int offset = (int) (height * 0.65); /* percent to move */
-        RelativeLayout.LayoutParams rlParams =
-                (RelativeLayout.LayoutParams) halfPieChart.getLayoutParams();
+        LinearLayout.LayoutParams rlParams =
+                (LinearLayout.LayoutParams) halfPieChart.getLayoutParams();
         rlParams.setMargins(0, 0, 0, -offset);
         halfPieChart.setLayoutParams(rlParams);
     }
@@ -135,7 +136,7 @@ public class ReportFragment extends DemoBase implements OnChartValueSelectedList
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(11f);
-        data.setValueTextColor(Color.WHITE);
+        data.setValueTextColor(Color.BLACK);
         data.setValueTypeface(mTfLight);
         halfPieChart.setData(data);
         halfPieChart.invalidate();
@@ -143,7 +144,7 @@ public class ReportFragment extends DemoBase implements OnChartValueSelectedList
 
     public void Styling_HalfPie() {
         halfPieChart.setBackgroundColor(Color.WHITE);
-        moveOffScreen();
+        //moveOffScreen();
         halfPieChart.setUsePercentValues(true);
         halfPieChart.setDescription("");
         halfPieChart.setCenterTextTypeface(mTfLight);
@@ -168,12 +169,13 @@ public class ReportFragment extends DemoBase implements OnChartValueSelectedList
         l.setYEntrySpace(0f);
         l.setYOffset(0f);
         // entry label styling
-        halfPieChart.setEntryLabelColor(Color.WHITE);
+        halfPieChart.setEntryLabelColor(Color.BLACK);
         halfPieChart.setEntryLabelTypeface(mTfRegular);
         halfPieChart.setEntryLabelTextSize(12f);
     }
 
     public void Styling_FullPie() {
+        fullPieChart.setBackgroundColor(Color.WHITE);
         fullPieChart.setUsePercentValues(true);
         fullPieChart.setDescription("");
         fullPieChart.setExtraOffsets(5, 10, 5, 5);
@@ -199,7 +201,7 @@ public class ReportFragment extends DemoBase implements OnChartValueSelectedList
         fullPieChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
         // fullPieChart.spin(2000, 0, 360);
         Legend l = fullPieChart.getLegend();
-        l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
+        l.setPosition(Legend.LegendPosition.ABOVE_CHART_CENTER);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(0f);
         l.setYOffset(0f);

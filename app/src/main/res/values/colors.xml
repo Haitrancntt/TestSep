@@ -21,4 +21,5 @@
     <color name="gray">#4F5A6D</color>
     <color name="color_finish_task">#1036f1</color>
     <color name="color_running_task">#c62222</color>
+    <color name="chart">#FFFFFF</color>
 </resources>

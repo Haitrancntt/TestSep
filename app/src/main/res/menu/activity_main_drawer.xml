@@ -32,11 +32,6 @@
     <item android:title="Control">
         <menu>
             <item
-                android:id="@+id/nav_setting"
-                android:icon="@drawable/ic_setting"
-                android:title="Setting" />
-
-            <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_logout"
                 android:title="Logout" />

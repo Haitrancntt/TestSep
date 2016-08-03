@@ -10,7 +10,7 @@
 
     <style name="AppTheme.Dark.Dialog" parent="Theme.AppCompat.Dialog">
         <item name="colorAccent">#FFFFFF</item>
-        <item name="android:textColorPrimary">#CCCCCC</item>
+        <item name="android:textColorPrimary">#cccccc</item>
         <item name="android:background">@color/colorPrimary</item>
     </style>
 

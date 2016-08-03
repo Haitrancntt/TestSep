@@ -28,11 +28,6 @@ import java.util.Arrays;
  */
 public class MainFragment extends Fragment {
 
-    private ListView listView;
-    private ArrayAdapter<String> arrayAdapter;
-    private ArrayList<String> arrayList;
-    private String[] strings = new String[]{"Task 1", "Task 2", "Task 3", "Task 4"};
-    private ImageButton btnAdd;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,18 +60,11 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        listView = (ListView) getActivity().findViewById(R.id.listview_Main);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        Toast.makeText(getActivity(), getActivity().toString() + "", Toast.LENGTH_SHORT).show();
-            arrayList = new ArrayList<>(Arrays.asList(strings));
-            arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, strings);
-            listView.setAdapter(arrayAdapter);
-
 
     }
 }

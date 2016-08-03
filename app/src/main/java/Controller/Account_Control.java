@@ -224,7 +224,6 @@ public class Account_Control {
         String output = null;
         try {
             PreparedStatement get = connect.prepareStatement("select name from Account where Id = " + iAccountId);
-            get.setInt(1, iAccountId);
             // int i = get.executeUpdate();
             ResultSet rs = get.executeQuery();
             while (rs.next()) {

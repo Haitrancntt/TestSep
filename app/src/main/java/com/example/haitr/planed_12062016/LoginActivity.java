@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     public static SharedPreferences loginRemember;
     public static SharedPreferences.Editor loginRememberEdit;
     public static int iPermission;
-    TextView lblus, lblpass;
+    private TextView lblus, lblpass;
     private Button btnlogin;
     private RelativeLayout relativeLayout;
     private Account account;
@@ -85,7 +85,6 @@ public class LoginActivity extends AppCompatActivity {
                     new GetRememberAccount().execute();
                 }
             });
-
 
             // BUTTON LISTENER
             btnlogin.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +154,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
             });
+
         }
 
     }
@@ -192,4 +192,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
+
+
 }

@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import Controller.Account_Control;
@@ -26,13 +27,20 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor logout;
     private Account_Control account_control;
+    private TextView txtWel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         account_control = new Account_Control(LoginActivity.db.getConnection());
+       // txtWel = (TextView) findViewById(R.id.textView_welcome);
+        // Bundle extras = getIntent().getExtras();
+      //  String name = account_control.GetName(LoginActivity.Account_Id);
+      //  txtWel.setText("Welcome to Planed " + name);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -60,26 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
                 } else if (id == R.id.nav_report) {
                     fm.beginTransaction().replace(R.id.content_frame, new ReportFragment()).commit();
-                } else if (id == R.id.nav_setting) {
-                    Toast.makeText(MainActivity.this, "Setting", Toast.LENGTH_SHORT).show();
-
                 } else if (id == R.id.nav_logout) {
                     LoginActivity.loginRememberEdit.putBoolean("logout", true);
                     LoginActivity.loginRememberEdit.commit();
-                   /* sharedPreferences = getSharedPreferences("Current User", MODE_PRIVATE);
-                    logout = sharedPreferences.edit();
-                    logout.remove("Username");
-                    logout.remove("Password");
-                    logout.commit();*/
-                  /*  if (LoginActivity.checkBox.isChecked()) {
-                        account_control.RemoveRemember(LoginActivity.Account_Id);
-
-                        LoginActivity.txtUS.setText("");
-                        LoginActivity.txtPass.setText("");
-                    } else {
-                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                    }*/
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(intent);
                     Toast.makeText(MainActivity.this, "Log out", Toast.LENGTH_SHORT).show();

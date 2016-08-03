@@ -77,6 +77,7 @@ public class ReportFragment extends DemoBase implements OnChartValueSelectedList
         super.onViewCreated(view, savedInstanceState);
         halfPieChart = (PieChart) getActivity().findViewById(R.id.halfpie);
         fullPieChart = (PieChart) getActivity().findViewById(R.id.fullpie);
+        barChart = (BarChart) getActivity().findViewById(R.id.BarChart);
         accountID = LoginActivity.Account_Id;
 
 
@@ -144,7 +145,6 @@ public class ReportFragment extends DemoBase implements OnChartValueSelectedList
 
     public void Styling_HalfPie() {
         halfPieChart.setBackgroundColor(Color.WHITE);
-        //moveOffScreen();
         halfPieChart.setUsePercentValues(true);
         halfPieChart.setDescription("");
         halfPieChart.setCenterTextTypeface(mTfLight);

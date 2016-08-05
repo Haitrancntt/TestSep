@@ -36,6 +36,8 @@
     //time
     <string name="runnable">Please choose task that have not run yet</string>
 
+    <string name="task_running">Only one task run on day</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="prompt">Choose one Type</string>
     <string-array name="item_spinner">

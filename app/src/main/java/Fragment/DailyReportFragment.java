@@ -17,19 +17,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.haitr.planed_12062016.LoginActivity;
 import com.example.haitr.planed_12062016.R;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.AxisValueFormatter;
+import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
@@ -38,6 +48,7 @@ import java.util.ArrayList;
 import Class.PieChartData;
 import Controller.Report_Control;
 import utilities.DemoBase;
+import Class.BarChartData;
 
 /**
  * Created by Thanh Huy on 7/29/2016.
@@ -48,6 +59,7 @@ public class DailyReportFragment extends DemoBase implements OnChartValueSelecte
     protected PieChart halfPieChart;
     protected ArrayList<Integer> halfpieArray;
     protected ArrayList<PieChartData> fullpieArray;
+    protected ArrayList<BarChartData> BarchartArray;
     protected int fullpieCount;
     protected Report_Control report_control;
     protected int accountID;
@@ -98,6 +110,12 @@ public class DailyReportFragment extends DemoBase implements OnChartValueSelecte
             @Override
             public void run() {
                 new LoadData_FullPie().execute();
+            }
+        });
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new LoadData_BarChart().execute();
             }
         });
     }
@@ -180,6 +198,113 @@ public class DailyReportFragment extends DemoBase implements OnChartValueSelecte
         halfPieChart.setEntryLabelTextSize(12f);
     }
 
+    public void Styling_BarChart() {
+        barChart.setPinchZoom(false);
+        barChart.setDrawBarShadow(false);
+        barChart.setDrawGridBackground(false);
+        Legend l = barChart.getLegend();
+        l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART_INSIDE);
+        l.setTypeface(mTfLight);
+        l.setYOffset(0f);
+        l.setYEntrySpace(0f);
+        l.setTextSize(8f);
+
+        XAxis xl = barChart.getXAxis();
+        xl.setTypeface(mTfLight);
+        xl.setGranularity(1f);
+        xl.setCenterAxisLabels(true);
+        xl.setValueFormatter(new AxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return String.valueOf((int) value);
+            }
+
+            @Override
+            public int getDecimalDigits() {
+                return 0;
+            }
+        });
+
+        YAxis leftAxis = barChart.getAxisLeft();
+        leftAxis.setTypeface(mTfLight);
+        leftAxis.setValueFormatter(new LargeValueFormatter());
+        leftAxis.setDrawGridLines(false);
+        //leftAxis.setSpaceTop(30f);
+        leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+        barChart.getAxisRight().setEnabled(false);
+        BarChart_SetData();
+
+    }
+
+    public void BarChart_SetData() {
+        float groupSpace = 0.4f;
+        float barSpace = 0.3f; // x3 dataset
+        float barWidth = 1.5f; // x3 dataset
+        // (0.3 + 0.02) * 3 + 0.04 = 1.00 -> interval per "group"
+
+        int startYear = 0;
+        //  int endYear = startYear + 4;
+
+        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> yVals2 = new ArrayList<BarEntry>();
+        // ArrayList<BarEntry> yVals3 = new ArrayList<BarEntry>();
+
+        // float mult = 100 * 100000f;
+
+        for (int i = startYear; i < BarchartArray.size(); i++) {
+            float val = (float) BarchartArray.get(i).getiActTime();
+            String labels = BarchartArray.get(i).getsName();
+            yVals1.add(new BarEntry(i, val, labels));
+        }
+
+        for (int i = startYear; i < BarchartArray.size(); i++) {
+            float val = (float) BarchartArray.get(i).getiEstTime();
+            String labels = BarchartArray.get(i).getsName();
+            yVals2.add(new BarEntry(i, val, labels));
+        }
+
+
+        BarDataSet set1, set2;
+
+        if (barChart.getData() != null &&
+                barChart.getData().getDataSetCount() > 0) {
+            set1 = (BarDataSet) barChart.getData().getDataSetByIndex(0);
+            set2 = (BarDataSet) barChart.getData().getDataSetByIndex(1);
+
+            set1.setValues(yVals1);
+            set2.setValues(yVals2);
+
+            barChart.getData().notifyDataChanged();
+            barChart.notifyDataSetChanged();
+        } else {
+
+            set1 = new BarDataSet(yVals1, "Actual Time");
+            set1.setColor(Color.rgb(104, 241, 175));
+            set2 = new BarDataSet(yVals2, "Estimated Time");
+            set2.setColor(Color.rgb(164, 228, 251));
+
+            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+            dataSets.add(set1);
+            dataSets.add(set2);
+
+
+            BarData data = new BarData(dataSets);
+            data.setValueFormatter(new LargeValueFormatter());
+
+            // add space between the dataset groups in percent of bar-width
+            data.setValueTypeface(mTfLight);
+
+            barChart.setData(data);
+        }
+
+        barChart.getBarData().setBarWidth(barWidth);
+        barChart.getXAxis().setAxisMinValue(startYear);
+        barChart.getXAxis().setAxisMaxValue(barChart.getBarData().getGroupWidth(groupSpace, barSpace) * 6 + startYear);
+        barChart.groupBars(startYear, groupSpace, barSpace);
+        // barChart.invalidate();
+
+    }
+
     public void Styling_FullPie() {
         fullPieChart.setBackgroundColor(Color.WHITE);
         fullPieChart.setUsePercentValues(true);
@@ -196,16 +321,13 @@ public class DailyReportFragment extends DemoBase implements OnChartValueSelecte
         fullPieChart.setTransparentCircleRadius(61f);
         fullPieChart.setDrawCenterText(true);
         fullPieChart.setRotationAngle(0);
-        // enable rotation of the chart by touch
         fullPieChart.setRotationEnabled(true);
         fullPieChart.setHighlightPerTapEnabled(true);
-        // fullPieChart.setUnit(" €");
-        // fullPieChart.setDrawUnitsInChart(true);
-        // add a selection listener
+
         fullPieChart.setOnChartValueSelectedListener(this);
         FullPie_Setdata(fullpieCount, 100);
         fullPieChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
-        // fullPieChart.spin(2000, 0, 360);
+
         Legend l = fullPieChart.getLegend();
         l.setPosition(Legend.LegendPosition.ABOVE_CHART_CENTER);
         l.setXEntrySpace(7f);
@@ -297,6 +419,22 @@ public class DailyReportFragment extends DemoBase implements OnChartValueSelecte
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             Styling_FullPie();
+        }
+    }
+
+    public class LoadData_BarChart extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            //Styling_BarChart();
+            BarchartArray = report_control.GetDataBarChart(accountID, "2016-08-03");
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Styling_BarChart();
         }
     }
 }

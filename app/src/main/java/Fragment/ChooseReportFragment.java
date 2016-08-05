@@ -146,6 +146,7 @@ public class ChooseReportFragment extends Fragment {
                 FragmentManager fm = getFragmentManager();
                 switch (iMode) {
                     case 1:
+                        DailyReportFragment fragment = new DailyReportFragment();
                         fm.beginTransaction().replace(R.id.content_frame, new DailyReportFragment()).commit();
                         break;
                 }
@@ -161,7 +162,7 @@ public class ChooseReportFragment extends Fragment {
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         editText.setText(dayOfMonth + "/"
                                 + (monthOfYear + 1) + "/" + year);
-                        String sDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+                        sDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
 
                         // LoadList(accountID, sDate);
                         mYear = year;

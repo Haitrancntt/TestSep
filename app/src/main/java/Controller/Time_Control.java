@@ -175,7 +175,6 @@ public class Time_Control {
         }
     }
 
-
     // EDIT EXECUTED TASK WITH STATUS !=1
     public boolean EditExecutedTask(int id, int time) {
         try {
@@ -192,5 +191,25 @@ public class Time_Control {
             e.printStackTrace();
             return false;
         }
+    }
+
+    //CHECK RUNNING
+    public boolean CheckRunningTask(int id) {
+        boolean c = false;
+        try {
+            PreparedStatement Pedit = connection.prepareStatement("exec EXCUTEDTASK_RUNNING ?");
+            Pedit.setInt(1, id);
+            ResultSet result = Pedit.executeQuery();
+            int i = 0;
+            while (result.next()) {
+                i++;
+            }
+            if (i != 0) {
+                c = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return c;
     }
 }

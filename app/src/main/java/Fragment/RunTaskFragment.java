@@ -36,8 +36,7 @@ public class RunTaskFragment extends Fragment {
     private Button btnRun, btnStop;
     private int iRun, iDone, iIdCurrent;
     private Time_Control time_control;
-    private String sStart, sEnd;
-    private boolean bCheck, cCheck;
+    private boolean bCheck, cCheck, rCheck;
     public static long millisInFuture;
     //private CountDownTimer countDownTimer;
 
@@ -91,13 +90,20 @@ public class RunTaskFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 bCheck = time_control.AddCurrentTimeStar(iIdCurrent);
-                if (bCheck) {
-                    timePassData = time_control.LoadList(timePassData.getId());
-                    txtStart.setText(timePassData.getStart());
-                    getActivity().startService(new Intent(getContext(), TimeService.class));
-                    btnRun.setEnabled(false);
+                rCheck = time_control.CheckRunningTask(LoginActivity.Account_Id);
+                if (rCheck = false) {
+                    if (bCheck) {
+                        timePassData = time_control.LoadList(timePassData.getId());
+                        txtStart.setText(timePassData.getStart());
+                        getActivity().startService(new Intent(getContext(), TimeService.class));
+                        btnRun.setEnabled(false);
+                    } else {
+                        Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.task_running, Toast.LENGTH_SHORT).show();
+                    FragmentManager fm = getFragmentManager();
+                    fm.beginTransaction().replace(R.id.content_frame, new TimeFragment()).commit();
                 }
 
             }

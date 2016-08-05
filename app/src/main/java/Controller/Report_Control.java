@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Class.PieChartData;
+import Class.BarChartData;
+
 /**
  * Created by Thanh Huy on 7/29/2016.
  */
@@ -60,6 +62,26 @@ public class Report_Control {
                 String name = rs.getString("Name");
                 int time = rs.getInt("Time");
                 PieChartData data = new PieChartData(name, time);
+                arrayList.add(data);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return arrayList;
+    }
+
+    public ArrayList<BarChartData> GetDataBarChart(int accId, String date) {
+        ArrayList<BarChartData> arrayList = new ArrayList<BarChartData>();
+        try {
+            PreparedStatement query = connection.prepareStatement("exec sp_report_tag_summary_include_estimatedtime ?, ?");
+            query.setInt(1, accId);
+            query.setString(2, date);
+            ResultSet rs = query.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString("Name");
+                int iActual = rs.getInt("actual");
+                int iEstimate = rs.getInt("estimated");
+                BarChartData data = new BarChartData(name, iActual, iEstimate);
                 arrayList.add(data);
             }
         } catch (SQLException e) {

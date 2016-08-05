@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import Controller.Account_Control;
 import Fragment.AccountFragment;
-import Fragment.DailyReportFragment;
+import Fragment.ChooseReportFragment;
 import Fragment.MainFragment;
 import Fragment.TagFragment;
 import Fragment.TaskFragment;
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                     fm.beginTransaction().replace(R.id.content_frame, new TagFragment()).commit();
 
                 } else if (id == R.id.nav_report) {
-                    fm.beginTransaction().replace(R.id.content_frame, new DailyReportFragment()).commit();
+                    fm.beginTransaction().replace(R.id.content_frame, new ChooseReportFragment()).commit();
                 } else if (id == R.id.nav_logout) {
                     LoginActivity.loginRememberEdit.putBoolean("logout", true);
                     LoginActivity.loginRememberEdit.commit();
